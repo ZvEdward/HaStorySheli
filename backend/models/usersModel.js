@@ -19,6 +19,20 @@ const usersSchema = new mongoose.Schema({
     type: Boolean,
     default:false,
   },
+  myBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book',
+      required:false,
+    },
+  ],
+  likedBooks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Book',
+      required:false,
+    },
+  ],
 });
 const Users = mongoose.model("Users", usersSchema);
 module.exports = Users;

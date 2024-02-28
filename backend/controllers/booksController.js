@@ -8,7 +8,7 @@ exports.createBook = async (req, res) => {
       const authorExists = await Users.exists({ _id: authorId });
   
       if (!authorExists) {
-        return res.status(404).send({ error: 'Author not found' });
+        return res.status(404).send({ message: 'Author not found' });
       }
   
       const newBook = new Books({
@@ -20,12 +20,32 @@ exports.createBook = async (req, res) => {
   
       const savedBook = await newBook.save();
         await Users.findByIdAndUpdate(authorId, {
-        $push: { createdBooks: savedBook._id },
+        $push: { myBooks: savedBook._id },
       });
   
       res.status(201).send(savedBook);
     } catch (error) {
       console.error(error);
-      res.status(500).send({ error: 'Internal Server Error' });
+      res.status(500).send({ message: 'Internal Server Error' });
     }
   };
+  exports.deleteBook = async (req, res) => {
+    try {
+        const { bookId, authorId } = req.body;
+
+        const bookExists = await Books.exists({ _id: bookId });
+
+        if (!bookExists) {
+            return res.status(404).send({ error: 'Book not found' });
+        }
+        await Users.findByIdAndUpdate(authorId, {
+            $pull: { myBooks: bookId },
+        });
+        await Books.findByIdAndDelete(bookId);
+
+        res.status(200).send({ message: 'Book deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
+    }
+};

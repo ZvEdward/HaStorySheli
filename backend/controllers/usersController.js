@@ -1,4 +1,5 @@
 const Users = require("../models/usersModel");
+const Books = require("../models/booksModel");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -247,6 +248,48 @@ exports.verifyUser = async (req, res) => {
   }
 };
 
+
+exports.toggleLikedBook = async (req, res) => {
+  try {
+      const { bookId, userId } = req.body;
+
+      const userExists = await Users.exists({ _id: userId });
+      const bookExists = await Books.exists({ _id: bookId });
+      console.log(userExists, bookExists);
+      if (!userExists || !bookExists) {
+          return res.status(404).send({ error: 'User or Book not found' });
+      }
+
+      const user = await Users.findById(userId);
+       const book = await Books.findById(bookId);
+      if (user.likedBooks.includes(bookId)) {
+          // If already liked, remove it from likedBooks and decrement likes
+          await Users.findByIdAndUpdate(userId, {
+              $pull: { likedBooks: bookId },
+          });
+
+          await Books.findByIdAndUpdate(bookId, {
+              $inc: { likes: -1 },
+          });
+
+          res.status(200).send({ message: 'Book removed from likedBooks', likes: book.likes - 1 });
+      } else {
+          // If not liked, add it to likedBooks and increment likes
+          await Users.findByIdAndUpdate(userId, {
+              $push: { likedBooks: bookId },
+          });
+
+          await Books.findByIdAndUpdate(bookId, {
+              $inc: { likes: 1 },
+          });
+
+          res.status(200).send({ message: 'Book added to likedBooks', likes: book.likes + 1 });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: 'Internal Server Error' });
+  }
+};
 
 async function ValidUser(recievedUser) {
   try {

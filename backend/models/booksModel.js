@@ -17,6 +17,10 @@ const bookSchema = new mongoose.Schema({
     ref: 'Users',
     required: true,
   },
+  likes:{
+    type: Number,
+    defualt: 0,
+  }
 });
 
 const Book = mongoose.model("Book", bookSchema);

@@ -11,4 +11,5 @@ router.route("/all").delete(usersController.deleteAllUsers)
 router.route("/DeleteByID/:id").delete(usersController.deleteById);
 router.route('/authenticate/:id').get(usersController.authenticate);
 router.route("/verify/:token").get(usersController.verifyUser);
+router.route("/likebook").post(usersController.toggleLikedBook)
 module.exports = router;
