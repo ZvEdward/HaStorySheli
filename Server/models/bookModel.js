@@ -9,8 +9,8 @@ const bookSchema = new mongoose.Schema({
     required: false,
   },
   approved: {
-    type: String,
-    required: true,
+    type: Boolean,
+    default: false,
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,7 +19,7 @@ const bookSchema = new mongoose.Schema({
   },
   likes:{
     type: Number,
-    defualt: 0,
+    default: 0,
   }
 },{ timestamps: true });
 
