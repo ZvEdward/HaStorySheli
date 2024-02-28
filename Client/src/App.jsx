@@ -6,8 +6,6 @@ import MainPage from "./pages/mainpage/MainPage";
 import Layout from "./pages/layout/Layout";
 import Homepage from "./pages/Homepage/Homepage";
 function App() {
-  const { user, setUser,authenticate } = useContext(Context);
- 
   return (
     <>
   <BrowserRouter>
