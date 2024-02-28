@@ -24,7 +24,7 @@ function Homepage() {
       console.error(error);
     }
   };
-
+  console.log(mostLikedBooks)
   useEffect(() => {
     getMostLike();
   }, []);
@@ -61,6 +61,7 @@ function Homepage() {
 
           <img className="firsthomepageimg" src={woman} alt="" />
         </div>
+        
       </div>
       <div className="mostLiked">
         {mostLikedBooks.map((item, index) => (
