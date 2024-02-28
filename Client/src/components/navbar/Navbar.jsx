@@ -13,19 +13,73 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import LoginIcon from '@mui/icons-material/Login';
 import { useNavigate } from 'react-router';
-import { useCredentials } from '../../Context';
+import Context from "../../Context";
 import { Checkbox, FormControl, FormControlLabel, Grow, Input, InputAdornment, InputLabel, TextField } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { useEffect } from 'react';
+import Logo from "../../images/Logo.png"
+import { useState } from 'react';
 
-
-const pages = ['Home', 'Catalog', 'Donate', 'Money Donation'];
-const settings = ['Logout'];
+const settings = ['התנתק'];
 // 'Profile', 
 
 function Navbar() {
-    const userData = useCredentials();
-    const isConnected = userData.isConnected;
+    const { getRequest, postRequest } = useContext(Context);
+    const [user, setUser] = useState(null);
+    const [usernameError, setUserNameError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const [loginError, setLoginError] = useState(false);
+    useEffect(() => {
+        getThisUser();
+    }, []);
+
+    const getThisUser = async () => {
+        try {
+            const response = await getRequest("/users/getThisUser");
+            console.log(response.data.user);
+            setUser(response.data.user);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const loginUser = async (username, password) => {
+        try {
+            const response = await postRequest("/users/signin", { username, password });
+            if (response.status) {
+                console.log("status");
+                console.log(response);
+                setAnchorElUser(null);
+                setAnchorElLogin(null);
+                setLoginError(false);
+                setUserNameError(false);
+                setPasswordError(false);
+                getThisUser();
+                navigate("/mainPage");
+            } else {
+                console.log(response);
+                setLoginError(response.response.message)
+            }
+        } catch (error) {
+            setLoginError(error.response.data.message);
+            setUserNameError(true);
+            setPasswordError(true);
+        }
+    }
+
+    const logoutUser = async () => {
+        try {
+            const response = await getRequest("/users/signout");
+            getThisUser();
+            setUser(null)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    // const userData = useCredentials();
+    const isConnected = Boolean(user?.username);
     const navigate = useNavigate();
     const [inputUserName, setInputUserName] = React.useState();
     const [inputPassword, setInputPassword] = React.useState();
@@ -49,6 +103,7 @@ function Navbar() {
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
+
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
@@ -89,7 +144,8 @@ function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        <img src="https://static.wixstatic.com/media/090e02_c365689f2bdd47a584dbe08e77dd8399~mv2.png/v1/crop/x_0,y_115,w_500,h_262/fill/w_123,h_64,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/white%20(1).png" alt="Rak-Lefanek" />
+                        {/* <img src="https://static.wixstatic.com/media/090e02_c365689f2bdd47a584dbe08e77dd8399~mv2.png/v1/crop/x_0,y_115,w_500,h_262/fill/w_123,h_64,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/white%20(1).png" alt="Rak-Lefanek" /> */}
+                        <img src={Logo} alt="HaStorySheli" style={{ width: 200, height: 45 }} />
                     </Typography>
 
                     {/* logo */}
@@ -108,10 +164,14 @@ function Navbar() {
                             <MenuIcon />
                         </IconButton>
                         <Menu
+                            sx={{
+                                mt: '45px',
+                                display: { xs: 'block', md: 'none' }
+                            }}
                             id="menu-appbar"
                             anchorEl={anchorElNav}
                             anchorOrigin={{
-                                vertical: 'bottom',
+                                vertical: 'top',
                                 horizontal: 'left',
                             }}
                             keepMounted
@@ -121,16 +181,20 @@ function Navbar() {
                             }}
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
-                            sx={{
-                                display: { xs: 'block', md: 'none' },
-                            }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center" onClick={() => { (!isConnected && page==='Home' ? alert("Please log in!") : navigate(`/${page}`)), handleCloseNavMenu }}>{page}</Typography>
+                            {isConnected && (
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Typography textAlign="center" onClick={() => { navigate("/homePage"), handleCloseNavMenu }}>בית</Typography>
                                 </MenuItem>
-                            ))}
+                            )}
+
+                            {isConnected && (
+                                <MenuItem onClick={handleCloseNavMenu}>
+                                    <Typography textAlign="center" onClick={() => { navigate("/profile"), handleCloseNavMenu }}>פרופיל</Typography>
+                                </MenuItem>
+                            )}
                         </Menu>
+
                     </Box>
 
                     {/* Phone mod logo */}
@@ -151,21 +215,42 @@ function Navbar() {
                             textDecoration: 'none',
                         }}
                     >
-                        <img src="https://static.wixstatic.com/media/090e02_c365689f2bdd47a584dbe08e77dd8399~mv2.png/v1/crop/x_0,y_115,w_500,h_262/fill/w_123,h_64,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/white%20(1).png" alt="Rak-Lefanek" />
+                        <img src={Logo} alt="HaStorySheli" style={{ width: 200, height: 45 }} />
                     </Typography>
 
 
                     {/* When in laptop - menu */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
+                        {/* {pages.map((page) => (
                             <Button
                                 key={page}
-                                onClick={() => { (!isConnected && page==='Home' ? alert("Please log in!") : navigate(`/${page}`)), handleCloseNavMenu }}
+                                onClick={() => { (!isConnected && page === 'Home' ? alert("Please log in!") : navigate(`/${page}`)), handleCloseNavMenu }}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 {page}
                             </Button>
-                        ))}
+                        ))} */}
+                        {
+                            isConnected && (
+                                <Button
+                                    onClick={() => { navigate("/mainPage"), handleCloseNavMenu }}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    בית
+                                </Button>
+                            )
+                        }
+
+                        {
+                            isConnected && (
+                                <Button
+                                    onClick={() => { navigate("/profile"), handleCloseNavMenu }}
+                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                >
+                                    פרופיל
+                                </Button>
+                            )
+                        }
                     </Box>
 
                     {/* Profile section */}
@@ -175,7 +260,7 @@ function Navbar() {
                             (<>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                        <Avatar>{`${userData.currentUser.firstName.charAt(0)}`}</Avatar>
+                                        <Avatar src={user?.profileImg} alt='https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0=' />
                                     </IconButton>
                                 </Tooltip>
                                 <Menu
@@ -198,7 +283,7 @@ function Navbar() {
                                     {/* <MenuItem key={settings[0]} onClick={() => { navigate("/Home"), handleCloseUserMenu }}>
                                         <Typography textAlign="center">{settings[0]}</Typography>
                                     </MenuItem> */}
-                                    <MenuItem key={settings[0]} onClick={() => { handleCloseUserMenu, setAnchorElUser(null),setAnchorElLogin(null), navigate("/"), userData.logout() }}>
+                                    <MenuItem key={settings[0]} onClick={() => { handleCloseUserMenu, setAnchorElUser(null), setAnchorElLogin(null), navigate("/"), logoutUser() }}>
                                         <Typography textAlign="center">{settings[0]}</Typography>
                                     </MenuItem>
                                 </Menu>
@@ -224,10 +309,10 @@ function Navbar() {
                                         open={Boolean(anchorElLogin)}
                                         onClose={handleCloseLoginMenu}
                                     >
-                                    
+
                                         <MenuItem >
-                                            <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                                                <InputLabel>User name</InputLabel>
+                                            <FormControl sx={{ m: 1, width: '25ch' }} variant="standard" error={usernameError}>
+                                                <InputLabel sx={{ direction: "rtl" }}>שם משתמש</InputLabel>
                                                 <Input
                                                     id="usernameInput"
                                                     type={'text'}
@@ -235,10 +320,10 @@ function Navbar() {
                                                 />
                                             </FormControl>
                                         </MenuItem>
-                                        
+
                                         <MenuItem >
-                                            <FormControl sx={{ m: 1, width: '25ch' }} variant="standard">
-                                                <InputLabel>Password</InputLabel>
+                                            <FormControl sx={{ m: 1, width: '25ch' }} variant="standard" error={passwordError}>
+                                                <InputLabel>סיסמא</InputLabel>
                                                 <Input
                                                     id="passwordInput"
                                                     type={showPassword ? 'text' : 'password'}
@@ -257,34 +342,37 @@ function Navbar() {
                                                 />
                                             </FormControl>
                                         </MenuItem>
-                                        <MenuItem>
+                                        {/* <MenuItem>
                                             <FormControlLabel control={
-                                                <Checkbox 
-                                                checked={staySignedIn}
-                                                onChange={(event) => {setStaySignedIn(event.target.checked)}}
-                                                sx={{
-                                                    color: "#00802D",
-                                                    '&.Mui-checked': {
+                                                <Checkbox
+                                                    checked={staySignedIn}
+                                                    onChange={(event) => { setStaySignedIn(event.target.checked) }}
+                                                    sx={{
                                                         color: "#00802D",
-                                                    },
-                                                }}
+                                                        '&.Mui-checked': {
+                                                            color: "#00802D",
+                                                        },
+                                                    }}
                                                 />} label="Remember me!"
                                             />
+                                        </MenuItem> */}
+                                        <MenuItem sx={{ direction: "rtl", color: "red" }}>
+                                            <span>{loginError}</span>
                                         </MenuItem>
                                         <MenuItem >
-                                            <Button onClick={() => { userData.login({ username: inputUserName, password: inputPassword, staySignedIn }), setAnchorElUser(null),setAnchorElLogin(null) }} 
-                                            variant="contained" endIcon={<LoginIcon />} fullWidth sx={{
-                                                ':hover': {
-                                                    bgcolor: "#37F715",
-                                                    color: 'white',
-                                                }, bgcolor: "#00802D",
-                                            }}
+                                            <Button onClick={() => { loginUser(inputUserName, inputPassword) }}
+                                                variant="contained" endIcon={<LoginIcon />} fullWidth sx={{
+                                                    ':hover': {
+                                                        bgcolor: "#37F715",
+                                                        color: 'white',
+                                                    }, bgcolor: "#00802D",
+                                                }}
                                             >
-                                                Login
+                                                הכנס
                                             </Button>
                                         </MenuItem>
-                                        <MenuItem>
-                                            <span>Dont have an account? <Link to="/signUp">Sign up!</Link></span>
+                                        <MenuItem sx={{ direction: "rtl" }}>
+                                            <span> עדיין לא רשום? <Link to="/signUp">הירשם כאן</Link></span>
                                         </MenuItem>
                                     </Menu>
                                 </>
@@ -297,7 +385,4 @@ function Navbar() {
     );
 }
 export default Navbar;
-
-
-
 
