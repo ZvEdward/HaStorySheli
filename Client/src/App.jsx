@@ -2,7 +2,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/layout/Layout";
-import ViewBook from "./pages/ViewBook";
+import ViewBook from "./pages/ViewBook/ViewBook";
 import MainPage from "./pages/mainpage/MainPage";
 import Homepage from "./pages/Homepage/Homepage";
 
