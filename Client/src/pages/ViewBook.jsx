@@ -82,7 +82,7 @@ const author= Book.author;
           ) : (
             <div>Please rotate your screen</div>
           )}
-          {/* <button className="closeModalBTN" onClick={closeModal}>close</button> */}
+          <button className="closeModalBTN" onClick={closeModal}>close</button>
         </Modal>
       </div>
     </>
