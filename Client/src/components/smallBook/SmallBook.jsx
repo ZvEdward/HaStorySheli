@@ -7,7 +7,7 @@ function SmallBook(Book) {
     const FrontImg= Book.pages[0];
     const BackImg= Book.pages[pages.length-1];
     const Author= Book.author;
-    const Date= Book.Date;
+    const createdAt= Book.createdAt;
 
 
   return (
@@ -17,7 +17,7 @@ function SmallBook(Book) {
      <img src= {FrontImg} alt="missing img"style={{ width: '150px', height: 'auto' }} />
      <div>
         <span>{Author}</span>
-        <span>{Date}</span>
+        <span>{createdAt}</span>
 
      </div>
 
