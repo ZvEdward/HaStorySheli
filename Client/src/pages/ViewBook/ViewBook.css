@@ -1,27 +1,61 @@
-#BookText{
+
+ #BookText {
     display: flex;
 }
+
 .PagesContainer {
     display: flex;
-    position: absolute;
+    position: relative; /* Change to relative */
     z-index: 2;
-
+    box-shadow: 0 0 4rem rgba(0, 0, 0, 4);
 }
+
 .pagesBTN {
-    opacity: 10%;
+    opacity: 0.1; /* Adjust as needed */
     position: absolute;
     height: 100%;
     z-index: 3;
+    width: 5%;
+    border: none; /* Remove the border */
+    background-color: transparent; /* Set background color to transparent */
+    cursor: pointer; /* Add pointer cursor on hover */
+}
 
-}
-.pagesBTN:hover {
+.BTNtext {
     opacity: 100%;
+    color: black; 
+    transition: opacity 0.3s ease; 
+    font-size: xx-large;
 }
+
+.pagesBTN:hover {
+    opacity: 40%; /* Adjust opacity on hover */
+}
+
+.pagesBTN:hover .BTNtext {
+    opacity: 300; /* Keep text fully opaque on hover */
+}
+
 #PreviousPage {
     left: 0;
 }
+
 #nextPage {
     right: 0;
 }
+#Page{
+    width: 100%;
+    height: auto;
+}
 
+@media screen and (max-width: 800px){
+    .PagesContainer{
+        transform: rotate(90deg);
+    }
+    #Page{
+        top: 2000px;
+     
+    }
+
+}
 

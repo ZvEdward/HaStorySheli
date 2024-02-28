@@ -38,11 +38,12 @@ const author= "עומר בן עזרא"
     <>
     <div id="BookText">
     <p>כותב הספר: {author}</p>
+
     </div>
     <div className="PagesContainer">
-            <button className="pagesBTN" id= "PreviousPage" onClick={handlePrevius}>{"<"}</button>
-            <img id="Page" src={imgSrc} alt="" style={{ width: '100%', height: 'auto' }}/>
-            <button className="pagesBTN" id= "nextPage"onClick={handleNext}>{">"}</button>
+            <button className="pagesBTN" id= "PreviousPage" onClick={handlePrevius}>{<p className="BTNtext">{"<"}</p>}</button>
+            <img id="Page" src={imgSrc} alt="" />
+            <button className="pagesBTN" id= "nextPage"onClick={handleNext}>{<p className="BTNtext">{">"}</p>}</button>
     </div>
     </>
   );
