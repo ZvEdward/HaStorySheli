@@ -10,6 +10,10 @@ function SmallBook({ Book }) {
   if (!Book) {
     return null;
   }
+    const BookId= Book._id;
+    const BookTitle= Book.title;
+
+    const Author= Book.author;
 
   const FrontImg = pages ? pages[0] : null;
   const BackImg = pages ? pages[pages.length - 1] : null;
