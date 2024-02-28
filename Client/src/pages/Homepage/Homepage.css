@@ -2,7 +2,7 @@
   .homepagediv {
     display: flex;
     width: 100vw;
-    min-height: 80vh;
+    height: 80vh;
     margin: 0;
     padding: 0;
   }
@@ -21,6 +21,13 @@
     margin: 2rem;
     width: 40vw;
   }
+  .mostLiked {
+    display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap; /* Ensures items are in a single row without wrapping */
+  overflow-x: auto;
+  }
+  
   
   .firsthomepageimg {
 
