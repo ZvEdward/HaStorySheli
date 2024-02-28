@@ -63,7 +63,7 @@ async function sendEmailVerification(toEmail, emailToken) {
             to: toEmail,
             subject: "Email Verification",
             // text: "Testdasad"
-            text:` Hey, \nPlease click the following link to verify your email:\n ${process.env.SERVER_ADDRESS}/users/verify/${emailToken}`,
+            text: ` Hey, \nPlease click the following link to verify your email:\n ${process.env.SERVER_ADDRESS}/users/verify/${emailToken}`,
         };
 
         const info = await transporter.sendMail(mailOptions);
@@ -80,8 +80,8 @@ exports.Signin = async (req, res) => {
 
         if (!user) {
             return res.status(401).json({
-                status: "fail",
-                message: "Username doesn't exist",
+                status: false,
+                message: "שם משתמש אינו קיים",
             });
         } else if (await bcrypt.compare(password, user.password)) {
             const token = jwt.sign(
@@ -98,29 +98,49 @@ exports.Signin = async (req, res) => {
                     sameSite: "strict",
                 });
                 res.status(200).send({
-                    status: "success",
+                    status: true,
                     message: "Logged in successfully",
                 });
             } else {
                 return res.status(402).json({
-                    status: "fail",
-                    message: "Please verify your Email and try again!",
+                    status: false,
+                    message: "אנא אמת את המייל שלך",
                 });
             }
         } else {
             return res.status(402).json({
-                status: "fail",
-                message: "Incorect password",
+                status: false,
+                message: "סיסמא שגויה",
             });
         }
     } catch (error) {
         res.status(400).json({
-            status: "fail",
+            status: false,
             message: "An error occurred during login",
             error: error,
         });
     }
 };
+
+exports.signout = async (req, res) => {
+    try{
+        res.cookie("token", "none", {
+            httpOnly: true,
+            maxAge: 1,
+            sameSite: "strict",
+        });
+        res.status(200).send({
+            status: true,
+            message: "Signout successfully",
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: false,
+            message: "An error occurred during signout",
+            error: error,
+        });
+    }
+}
 
 // exports.editUserById = async (req, res) => {
 //   try {
@@ -168,7 +188,7 @@ exports.verifyToken = async (req, res, next) => {
     }
     try {
         const decodedToken = jwt.verify(token, process.env.SECRET_JWT_KEY);
-        const user = await User.findById(decodedToken._id);
+        const user = await Users.findById(decodedToken._id);
         req.user = user;
         next();
     } catch (error) {
@@ -237,55 +257,67 @@ exports.verifyEmail = async (req, res) => {
 };
 
 exports.toggleLikedBook = async (req, res) => {
-    try {
-      const { bookId } = req.body;
-      const userId = req?.user?._id;
-      
-      if (!userId) {
-        return res.status(200).send({ message: "Must log in to like", type: 'error' });
+  try {
+    const { bookId } = req.body;
+    const userId = req?.user?._id;
+    
+    if (!userId) {
+      return res.status(200).send({ message: "Must log in to like", type: 'error' });
+    }
+      const userExists = await Users.exists({ _id: userId });
+      const bookExists = await Books.exists({ _id: bookId });
+      console.log(userExists, bookExists);
+      if (!userExists || !bookExists) {
+          return res.status(200).send({ message:"Must log in to like", type:'error' });
       }
-        const userExists = await Users.exists({ _id: userId });
-        const bookExists = await Books.exists({ _id: bookId });
-        console.log(userExists, bookExists);
-        if (!userExists || !bookExists) {
-            return res.status(200).send({ message:"Must log in to like", type:'error' });
-        }
 
-        const user = await Users.findById(userId);
-        const book = await Books.findById(bookId);
-        if (user.likedBooks.includes(bookId)) {
-            // If already liked, remove it from likedBooks and decrement likes
-            await Users.findByIdAndUpdate(userId, {
-                $pull: { likedBooks: bookId },
-            });
+      const user = await Users.findById(userId);
+      const book = await Books.findById(bookId);
+      if (user.likedBooks.includes(bookId)) {
+          // If already liked, remove it from likedBooks and decrement likes
+          await Users.findByIdAndUpdate(userId, {
+              $pull: { likedBooks: bookId },
+          });
 
-            await Books.findByIdAndUpdate(bookId, {
-                $inc: { likes: -1 },
-            });
+          await Books.findByIdAndUpdate(bookId, {
+              $inc: { likes: -1 },
+          });
 
-            res.status(200).send({
-              type:'error',
-                message: "Book removed from likedBooks",
-                likes: book.likes - 1,
-            });
-        } else {
-            // If not liked, add it to likedBooks and increment likes
-            await Users.findByIdAndUpdate(userId, {
-                $push: { likedBooks: bookId },
-            });
+          res.status(200).send({
+            type:'error',
+              message: "Book removed from likedBooks",
+              likes: book.likes - 1,
+          });
+      } else {
+          // If not liked, add it to likedBooks and increment likes
+          await Users.findByIdAndUpdate(userId, {
+              $push: { likedBooks: bookId },
+          });
 
-            await Books.findByIdAndUpdate(bookId, {
-                $inc: { likes: 1 },
-            });
+          await Books.findByIdAndUpdate(bookId, {
+              $inc: { likes: 1 },
+          });
 
-            res.status(200).send({
-                type: 'success',
-                message: "Book added to likedBooks",
-                likes: book.likes + 1,
-            });
-        }
+          res.status(200).send({
+              type: 'success',
+              message: "Book added to likedBooks",
+              likes: book.likes + 1,
+          });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).send({ error: "Internal Server Error" });
+  }
+};
+
+exports.getThisUser = async (req, res) => {
+    try {
+        console.log(req.user);
+        res.status(202).json({ user: req.user });
     } catch (error) {
-        console.error(error);
-        res.status(500).send({ error: "Internal Server Error" });
+        res.status(407).json({
+            message: "Getting this user has failed",
+            error: error,
+        });
     }
 };
