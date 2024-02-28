@@ -1,4 +1,3 @@
-// Homepage.jsx
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Homepage.css";
@@ -35,10 +34,24 @@ function Homepage() {
       <div className="homepagediv">
         <div className="firsthomepage">
           <div className="firsthomepagetext">
-            <Typography style={{ color: "black", mr: "1px" }} dir="rtl" variant="h2">
+            <Typography
+              style={{
+                color: "black",
+                mr: "1px",
+              }}
+              dir="rtl"
+              variant="h2"
+            >
               <b>הסטורי שלי</b>
             </Typography>
-            <Typography style={{ color: "black", mr: "1px" }} dir="rtl" variant="h6">
+            <Typography
+              style={{
+                color: "black",
+                mr: "1px",
+              }}
+              dir="rtl"
+              variant="h6"
+            >
               ללמוד מאחרים הוא לראות את העולם מנקודת מבט שונה, להעשיר את הידע
               ולהתרחיש תרבות שונה. דרך הקריאה אנו נכנסים לעולמם של סופרים,
               מחשבותיהם ותפיסת העולם הייחודית שלהם, ובכך מרחיבים את חשיבתנו
