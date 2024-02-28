@@ -1,106 +1,126 @@
 const Users = require("../models/userModel");
 const Books = require("../models/bookModel");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config({ path: "./.env" });
 
 const saltRounds = 11;
 
 exports.createUser = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-
-    // Check if the username already exists
-    const userExist = await Users.findOne({ username });
-
-    if (userExist) {
-        return res.status(400).json("username already exists");
-    }else{
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-        const newUser = await Users.create({
-          username,
-          email,
-          password: hashedPassword,
-        });
-        res.status(201).json({
-            status: "success",
-            message: "User has been created",
-        });
+    try {
+        const { username, email, password } = req.body;
+        const usernameExist = await Users.findOne({ username });
+        const emailExist = await Users.findOne({ email });
+        if (usernameExist) {
+            return res.status(400).json("username already exists");
+        } else if (emailExist) {
+            return res.status(400).json("email already exists");
+        } else {
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            const newUser = await Users.create({
+                username,
+                email,
+                password: hashedPassword,
+            });
+            const emailToken = jwt.sign(
+                { _id: newUser._id.toString() },
+                process.env.SECRET_JWT_KEY,
+                {
+                    expiresIn: "24h",
+                }
+            );
+            sendEmailVerification(newUser.email, emailToken);
+            res.status(201).json({
+                status: "success",
+                message: "User has been created",
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
-
-
-
-
-    // Send email verification
-    sendEmailVerification(newUser.email, verificationToken);
-    //Providing basic token
-    const token = jwt.sign({ _id: newUser._id }, process.env.SECRET, {
-      expiresIn: "1h",
-    });
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 60000,
-      sameSite: "strict",
-    });
-    // Return success message
-    return res.send({ user: newUser, message: "Signed up successfully. Please check your email for verification." });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
-  }
 };
 
-async function sendEmailVerification(toEmail, verificationToken) {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.MYEMAIL,
-        pass: process.env.MYEMAIL_PASSWORD,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+async function sendEmailVerification(toEmail, emailToken) {
+    try {
+        const transporter = nodemailer.createTransport({
+            host: "mail.privateemail.com",
+            secure: true,
+            port: 465,
+            auth: {
+                user: process.env.MYEMAIL,
+                pass: process.env.MYEMAIL_PASSWORD,
+            },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
 
-    const mailOptions = {
-      from:  process.env.MYEMAIL,
-      to: toEmail,
-      subject: 'Email Verification',
-      text:` Hey, \nPlease click the following link to verify your email:\n ${process.env.SERVER_ADDRESS}/users/verify/${verificationToken}`,
-    };
+        const mailOptions = {
+            from: process.env.MYEMAIL,
+            to: toEmail,
+            subject: "Email Verification",
+            // text: "Testdasad"
+            text:` Hey, \nPlease click the following link to verify your email:\n ${process.env.SERVER_ADDRESS}/users/verify/${emailToken}`,
+        };
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email verification sent:', info);
-  } catch (error) {
-    console.error('Email verification error:', error);
-  }
+        const info = await transporter.sendMail(mailOptions);
+        console.log("Email verification sent:", info);
+    } catch (error) {
+        console.error("Email verification error:", error);
+    }
 }
 
-
 exports.Signin = async (req, res) => {
-  const validUser = await ValidUser(req.body);
-  if (validUser) {
-    const token = jwt.sign({ _id: validUser._id }, process.env.SECRET, {
-      expiresIn: "1h",
-    });
-    res.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 36000,
-      sameSite: "strict",
-    });
-    res.status(200).json({
-      success: true,
-      message:{username:validUser.username, email:validUser.email, _id:validUser._id, verified: validUser.verified},
-    });
-  } else {
-    res.status(200).json({
-      success: false,
-      message:'Username or password invalid',
-    });
-  }
-};
+    try {
+        const { username, password } = req.body;
+        const user = await Users.findOne({ username });
 
+        if (!user) {
+            return res.status(401).json({
+                status: "fail",
+                message: "Username doesn't exist",
+            });
+        } else if (await bcrypt.compare(password, user.password)) {
+            const token = jwt.sign(
+                { _id: user._id },
+                process.env.SECRET_JWT_KEY,
+                {
+                    expiresIn: "24h",
+                }
+            );
+            if (user.verified) {
+                res.cookie("token", token, {
+                    httpOnly: true,
+                    maxAge: 864000,
+                    sameSite: "strict",
+                });
+                res.status(200).send({
+                    status: "success",
+                    message: "Logged in successfully",
+                });
+            } else {
+                return res.status(402).json({
+                    status: "fail",
+                    message: "Please verify your Email and try again!",
+                });
+            }
+        } else {
+            return res.status(402).json({
+                status: "fail",
+                message: "Incorect password",
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            status: "fail",
+            message: "An error occurred during login",
+            error: error,
+        });
+    }
+};
 
 // exports.editUserById = async (req, res) => {
 //   try {
@@ -139,35 +159,42 @@ exports.Signin = async (req, res) => {
 //   }
 // };
 
-exports.authenticate = async (req, res) => {
-  try {
+exports.verifyToken = async (req, res, next) => {
     const token = req.cookies.token;
-
     if (!token) {
-      return res.status(401).json({ message: "No token provided." });
+        return res
+            .status(401)
+            .json({ message: "Unauthorized: No token provided" });
     }
-    const decoded = jwt.verify(token, process.env.SECRET);
-    const answer = decoded._id == req.params.id;
-   
-    res.status(200).json({success:answer,message:token});
-  } catch (error) {
-    res.status(500).json({ message: error.message || "An error occurred." });
-  }
+    try {
+        const decodedToken = jwt.verify(token, process.env.SECRET_JWT_KEY);
+        const user = await User.findById(decodedToken._id);
+        req.user = user;
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: "Unauthorized: Invalid token" });
+    }
 };
 
-exports.verifyUser = async (req, res) => {
-  try {
-    console.log("verifyUser")
-    const verificationToken = req.params.token;
-    const decoded = jwt.verify(verificationToken, process.env.VERIFICATION_SECRET);
+exports.verifyEmail = async (req, res) => {
+    try {
+        const verificationToken = req.params.token;
+        const decoded = jwt.verify(
+            verificationToken,
+            process.env.SECRET_JWT_KEY
+        );
 
-    const userId = decoded._id;
+        const userId = decoded._id;
 
-    const updatedUser = await Users.findByIdAndUpdate(userId, { verified: true }, { new: true });
+        const updatedUser = await Users.findByIdAndUpdate(
+            userId,
+            { verified: true },
+            { new: true }
+        );
 
-    if (updatedUser) {
-      // Send an HTML response
-      return res.send(`
+        if (updatedUser) {
+            // Send an HTML response
+            return res.send(`
         <html>
           <head>
             <title>Email Verification</title>
@@ -178,9 +205,9 @@ exports.verifyUser = async (req, res) => {
           </body>
         </html>
       `);
-    } else {
-      // Send an HTML response for error
-      return res.status(404).send(`
+        } else {
+            // Send an HTML response for error
+            return res.status(404).send(`
         <html>
           <head>
             <title>Email Verification Error</title>
@@ -191,11 +218,11 @@ exports.verifyUser = async (req, res) => {
           </body>
         </html>
       `);
-    }
-  } catch (error) {
-    console.error("Error verifying user:", error);
-    // Send an HTML response for internal server error
-    res.status(500).send(`
+        }
+    } catch (error) {
+        console.error("Error verifying user:", error);
+        // Send an HTML response for internal server error
+        res.status(500).send(`
       <html>
         <head>
           <title>Internal Server Error</title>
@@ -206,48 +233,53 @@ exports.verifyUser = async (req, res) => {
         </body>
       </html>
     `);
-  }
+    }
 };
 
-
 exports.toggleLikedBook = async (req, res) => {
-  try {
-      const { bookId, userId } = req.body;
+    try {
+        const { bookId, userId } = req.body;
 
-      const userExists = await Users.exists({ _id: userId });
-      const bookExists = await Books.exists({ _id: bookId });
-      console.log(userExists, bookExists);
-      if (!userExists || !bookExists) {
-          return res.status(404).send({ error: 'User or Book not found' });
-      }
+        const userExists = await Users.exists({ _id: userId });
+        const bookExists = await Books.exists({ _id: bookId });
+        console.log(userExists, bookExists);
+        if (!userExists || !bookExists) {
+            return res.status(404).send({ error: "User or Book not found" });
+        }
 
-      const user = await Users.findById(userId);
-       const book = await Books.findById(bookId);
-      if (user.likedBooks.includes(bookId)) {
-          // If already liked, remove it from likedBooks and decrement likes
-          await Users.findByIdAndUpdate(userId, {
-              $pull: { likedBooks: bookId },
-          });
+        const user = await Users.findById(userId);
+        const book = await Books.findById(bookId);
+        if (user.likedBooks.includes(bookId)) {
+            // If already liked, remove it from likedBooks and decrement likes
+            await Users.findByIdAndUpdate(userId, {
+                $pull: { likedBooks: bookId },
+            });
 
-          await Books.findByIdAndUpdate(bookId, {
-              $inc: { likes: -1 },
-          });
+            await Books.findByIdAndUpdate(bookId, {
+                $inc: { likes: -1 },
+            });
 
-          res.status(200).send({ message: 'Book removed from likedBooks', likes: book.likes - 1 });
-      } else {
-          // If not liked, add it to likedBooks and increment likes
-          await Users.findByIdAndUpdate(userId, {
-              $push: { likedBooks: bookId },
-          });
+            res.status(200).send({
+                message: "Book removed from likedBooks",
+                likes: book.likes - 1,
+            });
+        } else {
+            // If not liked, add it to likedBooks and increment likes
+            await Users.findByIdAndUpdate(userId, {
+                $push: { likedBooks: bookId },
+            });
 
-          await Books.findByIdAndUpdate(bookId, {
-              $inc: { likes: 1 },
-          });
+            await Books.findByIdAndUpdate(bookId, {
+                $inc: { likes: 1 },
+            });
 
-          res.status(200).send({ message: 'Book added to likedBooks', likes: book.likes + 1 });
-      }
-  } catch (error) {
-      console.error(error);
-      res.status(500).send({ error: 'Internal Server Error' });
-  }
+            res.status(200).send({
+                message: "Book added to likedBooks",
+                likes: book.likes + 1,
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
 };
