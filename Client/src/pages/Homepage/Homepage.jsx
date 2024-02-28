@@ -25,7 +25,6 @@ function Homepage() {
       console.error(error);
     }
   };
-
   useEffect(() => {
     getMostLike();
   }, []);
