@@ -1,24 +1,22 @@
-import { useState, useRef, useContext } from "react";
-import { Route, BrowserRouter, Routes } from "react-router-dom";
-import "./App.css";
-import Context from "./Context";
-import MainPage from "./pages/mainpage/MainPage";
+// App.jsx
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/layout/Layout";
+import ViewBook from "./pages/ViewBook";
+import MainPage from "./pages/mainpage/MainPage";
 import Homepage from "./pages/Homepage/Homepage";
+
 function App() {
-  const { user, setUser,authenticate } = useContext(Context);
- 
   return (
-    <>
-  <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="/" element={<Homepage/>}></Route>
-            <Route path="/*" element={<MainPage/>}></Route>
-            </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/ViewBook" element={<ViewBook />} />
+          <Route path="/*" element={<MainPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

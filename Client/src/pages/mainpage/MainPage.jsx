@@ -5,6 +5,8 @@ import axios from "axios";
 import smallBook from "../../components/smallBook/SmallBook.jsx"
 function MainPage() {
   const [LikedArr, setLikedArr] = useState([]);
+  const [NewArr, setNewArr] = useState([]);
+  
   function fetchMostLiked() {
     axios
       .get("mostliked")
@@ -15,12 +17,22 @@ function MainPage() {
         console.error("Error fetching data:", error);
       });
   }
-
+  function fetchNewBooks() {
+    axios
+      .get("newbooks")
+      .then((response) => {
+        setNewArr(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }
   return (
-    <>
-      <div>
-        <img src={logo} alt="yyy" />
+    <div style={{ textAlign: "center" }}>
+      <div >
+        <img src={logo} alt="yyy" style={{ width: "200px" }} />
       </div>
+      
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio voluptates
         deserunt porro expedita assumenda delectus aut provident, sequi aliquam
@@ -32,7 +44,7 @@ function MainPage() {
         <ul>
           {LikedArr.map((item, index) => (
             <div key={index}>
-              <smallBook Book={LikedArr[index]} />
+              <smallBook Book={LikedArr[index]} onClick={OpenBook(LikedArr[index])} />
             </div>
             
           ))}
@@ -41,9 +53,16 @@ function MainPage() {
       </div>
       <div>
         <p>ספרים חדשים</p>
-        //List
+        <ul>
+          {NewArr.map((item, index) => (
+            <div key={index}>
+              <SmallBook Book={NewArr[index]} />
+            </div>
+            
+          ))}
+        </ul>
       </div>
-    </>
+    </div>
   );
 }
 
