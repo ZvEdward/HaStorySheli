@@ -30,10 +30,6 @@ const author= Book.author;
 
   return (
     <>
-    <div id="BookText">
-    <p>כותב הספר: {author}</p>
-
-    </div>
     <div className="PagesContainer">
             <button className="pagesBTN" id= "PreviousPage" onClick={handlePrevius}>{<p className="BTNtext">{"<"}</p>}</button>
             <img id="Page" src={imgSrc} alt="" />

@@ -238,13 +238,17 @@ exports.verifyEmail = async (req, res) => {
 
 exports.toggleLikedBook = async (req, res) => {
     try {
-        const { bookId, userId } = req.body;
-
+      const { bookId } = req.body;
+      const userId = req?.user?._id;
+      
+      if (!userId) {
+        return res.status(200).send({ message: "User not found", type: 'error' });
+      }
         const userExists = await Users.exists({ _id: userId });
         const bookExists = await Books.exists({ _id: bookId });
         console.log(userExists, bookExists);
         if (!userExists || !bookExists) {
-            return res.status(404).send({ error: "User or Book not found" });
+            return res.status(200).send({ message:"User or Book not found", type:'error' });
         }
 
         const user = await Users.findById(userId);
@@ -260,6 +264,7 @@ exports.toggleLikedBook = async (req, res) => {
             });
 
             res.status(200).send({
+              type:'error',
                 message: "Book removed from likedBooks",
                 likes: book.likes - 1,
             });
@@ -274,6 +279,7 @@ exports.toggleLikedBook = async (req, res) => {
             });
 
             res.status(200).send({
+                type: 'success',
                 message: "Book added to likedBooks",
                 likes: book.likes + 1,
             });

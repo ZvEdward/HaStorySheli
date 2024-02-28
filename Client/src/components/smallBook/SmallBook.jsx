@@ -1,11 +1,13 @@
 // SmallBook.jsx
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SmallBook.css";
+import Context from "../../Context";
 
 function SmallBook({ Book }) {
   const { title, pages, author, createdAt, likes } = Book || {};
   const navigate = useNavigate();
+  const { user, setToastData, toastData, postRequest } = useContext(Context);
 
   if (!Book) {
     return null;
@@ -16,14 +18,32 @@ function SmallBook({ Book }) {
   const formattedDate = new Date(createdAt).toLocaleDateString();
 
   const handleBookClick = () => {
-    console.log(Book)
-    navigate("/ViewBook", { state:Book });
+    navigate("/ViewBook", { state: Book });
   };
+  const CheckIfILike = () => {
+    if (!user || !user.likedBooks || !Array.isArray(user.likedBooks)) {
+      return false;
+    }
+    return user.likedBooks.includes(Book._id);
+  };
+  const CheckLike = async () => {
+    const response = await postRequest("/users/likebook", Book._id).then(
+      (response) => {
+        setToastData({
+          type: response.data.type,
+          content: response.data.message,
+        });
+      }
+    );
+  };
+  useEffect(() => {
+    console.log(toastData);
+  }, [toastData]);
 
   return (
-    <div className="book-container" onClick={handleBookClick}>
+    <div className="book-container">
       <p className="book-title">{title}</p>
-      <div className="flip-card">
+      <div className="flip-card" onClick={handleBookClick}>
         <div className="flip-card-inner">
           <div className="flip-card-front">
             <img src={FrontImg} alt="Book Cover" />
@@ -39,8 +59,10 @@ function SmallBook({ Book }) {
 
       <div className="book-details">
         <div className="book-metadata">
-          <span className="book-likes">Likes: {likes}</span>
-          <span className="book-date">Date: {formattedDate}</span>
+          <span className="book-likes" onClick={CheckLike}>
+            {CheckIfILike() ? `❤️` : `🖤`}:{likes}
+          </span>
+          <span className="book-date">{formattedDate}</span>
         </div>
       </div>
     </div>

@@ -9,6 +9,21 @@ import Context from '../../Context.jsx';
 function Layout() {
   const Data = useContext(Context);
 useEffect(() => {
+  if(Data?.toastData?.type =="success")
+  {
+  toast.success(Data?.toastData?.content, {
+    position: "top-center",
+    autoClose: 2400,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Slide,
+    });
+    Data.setToastData({})
+  }
   if(Data?.toastData?.type =="info")
   {
   toast.info(Data?.toastData?.content, {
@@ -19,7 +34,7 @@ useEffect(() => {
     pauseOnHover: true,
     draggable: true,
     progress: undefined,
-    theme: "dark",
+    theme: "light",
     transition: Slide,
     });
     Data.setToastData({})
@@ -34,7 +49,7 @@ useEffect(() => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "dark",
+        theme: "light",
         transition: Slide,
         });
         Data.setToastData({})

@@ -1,3 +1,4 @@
+// Context.jsx
 import axios from "axios";
 import { createContext, useState } from "react";
 
@@ -11,9 +12,11 @@ export const ContextProvider = ({ children }) => {
     });
     return response;
   }
-  const postRequest = async (request,data) => {
-    const response = await axios.post(`
-      ${import.meta.env.VITE_REACT_APP_CALL}${request}`,data,
+  
+  const postRequest = async (request, data) => {
+    const response = await axios.post(
+      `${import.meta.env.VITE_REACT_APP_CALL}${request}`,
+      data,
       {
         withCredentials: true,
       }
@@ -21,9 +24,12 @@ export const ContextProvider = ({ children }) => {
     return response;
   }
 
+  const [toastData, setToastData] = useState({}); 
+
   const [user, setUser] = useState({ Username: '', Password: '', Email: '' });
+  
   return (
-    <Context.Provider value={{ user, setUser,postRequest,getRequest}}>
+    <Context.Provider value={{ user, setUser, postRequest, getRequest, toastData, setToastData }}>
       {children}
     </Context.Provider>
   );
