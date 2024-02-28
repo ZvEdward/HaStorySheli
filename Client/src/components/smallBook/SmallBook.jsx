@@ -12,8 +12,9 @@ function SmallBook(Book) {
 
   return (
     <>
+    <p>כותה הספר: </p>
      <p>{BookTitle}</p>
-     <img src= {FrontImg} alt="missing img" />
+     <img src= {FrontImg} alt="missing img"style={{ width: '150px', height: 'auto' }} />
      <div>
         <span>{Author}</span>
         <span>{Date}</span>
