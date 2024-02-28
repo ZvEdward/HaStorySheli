@@ -3,7 +3,6 @@ const app = require("./app");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./.env" });
-const { error } = require("console");
 const port = 8000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
