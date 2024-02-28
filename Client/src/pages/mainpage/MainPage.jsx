@@ -46,7 +46,7 @@ function MainPage() {
         <ul>
           {LikedArr.map((item, index) => (
             <div key={index}>
-              <SmallBook Book={LikedArr[index]} />
+              <smallBook Book={LikedArr[index]} />
             </div>
             
           ))}

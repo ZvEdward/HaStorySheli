@@ -1,8 +1,10 @@
+import "./Navbar.css"
 function Navbar() {
     return (
       <>
-       <h1 className='center'>Navbar</h1>
-
+        <div className="navbardiv">
+          <h1>Hey</h1>
+        </div>
       </>
     )
   }
