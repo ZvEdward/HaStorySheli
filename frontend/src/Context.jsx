@@ -4,17 +4,25 @@ import { createContext, useState } from "react";
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-  
-  const authenticate = async (user) => {
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_USERS_CALL}/authenticate/${user._id}`, {
+  const getRequest = async (request) => {
+    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_CALL}${request}`, {
       withCredentials: true, 
     });
-    console.log(response);
     return response;
   }
+  const postRequest = async (request,data) => {
+    const response = await axios.post(`
+      ${import.meta.env.VITE_REACT_APP_CALL}${request}`,data,
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+  }
+
   const [user, setUser] = useState({ Username: '', Password: '', Email: '' });
   return (
-    <Context.Provider value={{ user, setUser,authenticate}}>
+    <Context.Provider value={{ user, setUser,postRequest,getRequest}}>
       {children}
     </Context.Provider>
   );
