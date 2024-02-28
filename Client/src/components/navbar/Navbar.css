@@ -1,0 +1,7 @@
+.navbardiv
+{
+    width: 100vw;
+    display: flex;
+    height: 20vw;
+    background-color: gray;
+}
