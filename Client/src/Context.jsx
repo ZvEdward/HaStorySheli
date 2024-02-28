@@ -5,6 +5,7 @@ const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const getRequest = async (request) => {
+    console.log(`${import.meta.env.VITE_REACT_APP_CALL}${request}`)
     const response = await axios.get(`${import.meta.env.VITE_REACT_APP_CALL}${request}`, {
       withCredentials: true, 
     });

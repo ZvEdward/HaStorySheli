@@ -3,7 +3,7 @@ const Books = require("../models/bookModel");
 
 exports.createBook = async (req, res) => {
     try {
-      const { title, pages, approved, authorId } = req.body;
+      const { title, pages,authorId } = req.body;
   
       const authorExists = await Users.exists({ _id: authorId });
   
@@ -14,7 +14,6 @@ exports.createBook = async (req, res) => {
       const newBook = new Books({
         title,
         pages,
-        approved,
         author: authorId,
       });
   
@@ -48,4 +47,17 @@ exports.createBook = async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'Internal Server Error' });
     }
+};
+exports.getTopLikedBooks = async (req, res) => {
+  try {
+    let limit = req.params.limit;
+    if(limit >10)
+    limit = 10;
+    const topLikedBooks = await Books.find().sort({ likes: -1 }).limit(limit);
+
+    res.status(200).send(topLikedBooks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
 };
