@@ -274,7 +274,6 @@ exports.toggleLikedBook = async (req, res) => {
 
           res.status(200).send({ message: 'Book removed from likedBooks', likes: book.likes - 1 });
       } else {
-          // If not liked, add it to likedBooks and increment likes
           await Users.findByIdAndUpdate(userId, {
               $push: { likedBooks: bookId },
           });
