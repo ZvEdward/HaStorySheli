@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import axios from "axios";
 import Context from "./Context";
+import MainPage from "./pages/mainpage/MainPage";
 function App() {
   const { user, setUser,authenticate } = useContext(Context);
   const [message, setMessage] = useState();
@@ -80,6 +81,7 @@ function App() {
 
   return (
     <>
+    <MainPage/>
       <div>
         <input
           type="text"
