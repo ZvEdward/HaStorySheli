@@ -7,8 +7,10 @@
     display: flex;
     position: relative; /* Change to relative */
     z-index: 2;
-    box-shadow: 0 0 4rem rgba(0, 0, 0, 4);
+    border: 2px, black;
+    width: 100%;
 }
+
 
 .pagesBTN {
     opacity: 0.1; /* Adjust as needed */
@@ -19,6 +21,11 @@
     border: none; /* Remove the border */
     background-color: transparent; /* Set background color to transparent */
     cursor: pointer; /* Add pointer cursor on hover */
+}
+#closeModalBTN{
+
+    color: black; 
+    font-size: xx-large;
 }
 
 .BTNtext {
@@ -49,13 +56,20 @@
 }
 
 @media screen and (max-width: 800px){
-    .PagesContainer{
-        transform: rotate(90deg);
-    }
-    #Page{
-        top: 2000px;
-     
+    
+    #Modal {
+        width: 100%; 
+        height: 100%; 
+        display: flex;
     }
 
+    .PagesContainer {
+        width: 100%;
+        height: 100vh; /* Make the container full-screen */
+        top: 0;
+        left: 0;
+        position: absolute;
+        transform: rotate(90deg); /* Rotate and move out of viewport */
+    }
 }
 
