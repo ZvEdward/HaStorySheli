@@ -2,14 +2,15 @@ import { useState, useRef, useContext } from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./App.css";
 import Context from "./Context";
-import MainPage from "./pages/mainpage/MainPage";
 import Layout from "./pages/layout/Layout";
-import Homepage from "./pages/Homepage/Homepage";
+import ViewBook from "./pages/ViewBook";
+import MainPage from "./pages/mainpage/MainPage";
 function App() {
   const { user, setUser,authenticate } = useContext(Context);
  
   return (
     <>
+ 
   <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -18,6 +19,7 @@ function App() {
             </Route>
         </Routes>
       </BrowserRouter>
+      <ViewBook/>
     </>
   );
 }
