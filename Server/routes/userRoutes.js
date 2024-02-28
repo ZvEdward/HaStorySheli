@@ -8,7 +8,7 @@ router.route("/signin").post(userController.Signin);
 
 // router.route("/edit/:id").post(userController.editUserById)
 // router.route("/DeleteByID/:id").delete(userController.deleteById);
-router.route('/authenticate/:id').get(userController.authenticate);
-router.route("/verify/:token").get(userController.verifyUser);
+// router.route('/authenticate/:id').get(userController.authenticate);
+// router.route("/verify/:token").get(userController.verifyEmail);
 router.route("/likebook").post(userController.toggleLikedBook)
 module.exports = router;
