@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
-const routerCreator = require("./routes/usersRoutes");
+const userRouterCreator = require("./routes/usersRoutes");
+const bookRouterCreator = require("./routes/booksRoutes");
 module.exports = app;
 app.use(express.json());
 app.use(cookieParser());
@@ -12,4 +13,5 @@ const corsOptions = {
   };
 
   app.use(cors(corsOptions));
-app.use("/users", routerCreator);
+app.use("/users", userRouterCreator);
+app.use("/books", bookRouterCreator);
