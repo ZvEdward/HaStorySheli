@@ -7,8 +7,6 @@ import ViewBook from "./pages/ViewBook";
 import MainPage from "./pages/mainpage/MainPage";
 import Homepage from "./pages/Homepage/Homepage";
 function App() {
-  const { user, setUser,authenticate } = useContext(Context);
- 
   return (
     <>
  
