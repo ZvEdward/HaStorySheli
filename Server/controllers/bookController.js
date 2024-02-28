@@ -3,7 +3,7 @@ const Books = require("../models/bookModel");
 
 exports.createBook = async (req, res) => {
     try {
-      const { title, pages,authorId } = req.body;
+      const { title, pages,authorId,summary } = req.body;
   
       const authorExists = await Users.exists({ _id: authorId });
   
@@ -15,6 +15,7 @@ exports.createBook = async (req, res) => {
         title,
         pages,
         author: authorId,
+        summary,
       });
   
       const savedBook = await newBook.save();

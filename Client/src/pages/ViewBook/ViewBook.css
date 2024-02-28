@@ -54,7 +54,7 @@
     height: auto;
 }
 
-@media screen and (max-width: 800px){
+@media screen and (max-width: 500px){
     
     #Modal {
         width: 100%; 

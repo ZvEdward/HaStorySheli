@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ViewBook/ViewBook.css"
+import "./ViewBook.css"
 import { useLocation } from "react-router-dom";
 import Modal from "react-modal"
 function ViewBook() {

@@ -242,13 +242,13 @@ exports.toggleLikedBook = async (req, res) => {
       const userId = req?.user?._id;
       
       if (!userId) {
-        return res.status(200).send({ message: "User not found", type: 'error' });
+        return res.status(200).send({ message: "Must log in to like", type: 'error' });
       }
         const userExists = await Users.exists({ _id: userId });
         const bookExists = await Books.exists({ _id: bookId });
         console.log(userExists, bookExists);
         if (!userExists || !bookExists) {
-            return res.status(200).send({ message:"User or Book not found", type:'error' });
+            return res.status(200).send({ message:"Must log in to like", type:'error' });
         }
 
         const user = await Users.findById(userId);

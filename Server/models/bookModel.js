@@ -20,6 +20,11 @@ const bookSchema = new mongoose.Schema({
   likes:{
     type: Number,
     default: 0,
+  },
+  summary:
+  {
+    type:String,
+    required: false,
   }
 },{ timestamps: true });
 
