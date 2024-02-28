@@ -1,11 +1,10 @@
 import React, { useContext, useEffect } from 'react';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-// import DynamicNavBar from './DynamicNavBar';
 import { Bounce, Slide, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Context from '../../Context.jsx';
-// import Navbar from '../../components/navbar/Navbar';
+import Navbar from '../../components/navbar/Navbar';
 function Layout() {
   const Data = useContext(Context);
 useEffect(() => {
@@ -97,7 +96,7 @@ const themeOptions = {
       <ThemeProvider theme={theme}>   
       <ToastContainer/>
         <CssBaseline style={{ color: 'white' }} />
-        {/* <Navbar/> */}
+        <Navbar/>
         <Outlet />
         
       </ThemeProvider>
