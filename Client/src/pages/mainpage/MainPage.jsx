@@ -2,8 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import React from "react";
 import logo from "../../images/Logo.png";
 import axios from "axios";
-import SmallBook from "../../component/SmallBook";
-
+import smallBook from "../../components/smallBook/SmallBook.jsx"
 function MainPage() {
   const [LikedArr, setLikedArr] = useState([]);
   function fetchMostLiked() {
@@ -33,7 +32,7 @@ function MainPage() {
         <ul>
           {LikedArr.map((item, index) => (
             <div key={index}>
-              <SmallBook Book={LikedArr[index]} />
+              <smallBook Book={LikedArr[index]} />
             </div>
             
           ))}
