@@ -1,0 +1,117 @@
+/* SmallBook.css */
+
+/* Flip Card Styles */
+.flip-card {
+    background-color: transparent;
+    width: 20vw;
+    height: 30vw;
+    perspective: 1000px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  
+  .flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .flip-card-front,
+  .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  .flip-card-front img {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+  }
+  
+  /* Use a background image for the back side */
+  .flip-card-back {
+    transform: rotateY(180deg);
+    background-color: #333; /* Change background color */
+    color: white; /* Change text color */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .back-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+  
+  .backimg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+  
+  /* Text Overlay Styles */
+  .text-before-cards {
+    font-size: 1.5vw;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    color: white;
+    width: 100%;
+    animation-name: switching-color-headline;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+  
+  /* Animation Keyframes */
+  @keyframes switching-color-headline {
+    0%   { color: blue; }
+    25%  { color: red; }
+    50%  { color: rgb(0, 255, 0); }
+    75%  { color: red; }
+    100% { color: blue; }
+  }
+  
+  /* Additional Styling for Book Details */
+  .book-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .book-title {
+    font-size: 1.5vw;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .book-metadata {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .book-author,
+  .book-date {
+    font-size: 1.2vw;
+  }
+  

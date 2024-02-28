@@ -3,21 +3,24 @@ import woman from "../../images/womanholdingphone.jpg";
 import { Typography } from "@mui/material";
 import { useContext, useState, useEffect } from "react";
 import Context from "../../Context";
+import SmallBook from "../../components/smallBook/SmallBook";
 
 function Homepage() {
   const { getRequest } = useContext(Context);
-  const [mostLikedBooks, setMostLikedBooks] = useState();
-
+  const [mostLikedBooks, setMostLikedBooks] = useState([]);
+  const [mostLikeView,setMostLikeView] = useState(4)
   const getMostLike = async () => {
     try {
-      const response = await getRequest("/books/getMostLike/2");
-      setMostLikedBooks(response);
-      console.log(response);
+      const response = await getRequest(`/books/getMostLike/${mostLikeView}`);
+      if (Array.isArray(response?.data)) {
+        setMostLikedBooks(response?.data);
+      } else {
+        console.error("Invalid response format:", response?.data);
+      }
     } catch (error) {
       console.error(error);
     }
   };
-
   useEffect(() => {
     getMostLike();
   }, []);
@@ -54,7 +57,15 @@ function Homepage() {
 
           <img className="firsthomepageimg" src={woman} alt="" />
         </div>
+        
       </div>
+      <div className="mostLiked">
+          {mostLikedBooks.map((item, index) => (
+            <div key={index} style={{width:"20%"}}>
+              <SmallBook Book={item} />
+            </div>
+          ))}
+        </div>
     </>
   );
 }
