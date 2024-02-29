@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SmallBook.css";
 import Context from "../../Context";
-
+import LogoIcon from "../../images/Logo-Icon.png"
 function SmallBook({ Book }) {
   const { title, pages, author, createdAt, likes } = Book || {};
   const navigate = useNavigate();
@@ -63,11 +63,11 @@ function SmallBook({ Book }) {
         <div className="flip-card" onClick={handleBookClick}>
           <div className="flip-card-inner">
             <div className="flip-card-front">
-              <img src={FrontImg} alt="Book Cover" />
+              <img src={FrontImg? FrontImg: LogoIcon} alt={"Book Cover"} />
             </div>
             <div className="flip-card-back">
               <div className="back-container">
-                <img className="backimg" src={BackImg} alt="" />
+                <img className="backimg" src={BackImg ? BackImg: LogoIcon} alt={LogoIcon} />
               </div>
             </div>
           </div>
