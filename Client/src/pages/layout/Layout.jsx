@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { CssBaseline } from '@mui/material';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { Bounce, Slide, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
