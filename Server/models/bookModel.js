@@ -28,7 +28,7 @@ const bookSchema = new mongoose.Schema({
   },
   hashtags:[
   {
-    type:String,
+    type:Array,
     required: false,
   }]
 },{ timestamps: true });

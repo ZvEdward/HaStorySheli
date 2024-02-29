@@ -2,34 +2,35 @@ const Users = require("../models/userModel");
 const Books = require("../models/bookModel");
 
 exports.createBook = async (req, res) => {
-    try {
-      const { title, pages,authorId,summary,hashtags} = req.body;
-  
-      const authorExists = await Users.exists({ _id: authorId });
+  try {
+      console.log(req.body);
+      const { title, pages, userId, summary,hashtags} = req.body;
+      console.log(userId);
+      const authorExists = await Users.findOne({_id:userId});
+      console.log(authorExists);
   
       if (!authorExists) {
         return res.status(404).send({ message: 'Author not found' });
       }
-  
       const newBook = new Books({
         title,
         pages,
-        author: authorId,
+        author: userId,
         summary,
         hashtags,
       });
   
       const savedBook = await newBook.save();
-        await Users.findByIdAndUpdate(authorId, {
+        await Users.findByIdAndUpdate(userId, {
         $push: { myBooks: savedBook._id },
       });
-  
       res.status(201).send(savedBook);
     } catch (error) {
       console.error(error);
       res.status(500).send({ message: 'Internal Server Error' });
     }
   };
+
   exports.deleteBook = async (req, res) => {
     try {
         const { bookId, authorId } = req.body;

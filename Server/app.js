@@ -21,9 +21,9 @@ app.post("/users/signin", userController.Signin);
 app.post("/users/signup", userController.createUser);
 app.get("/users/verify/:token", userController.verifyEmail);
 
+app.use("/books", bookRoutes);
 app.use(userController.verifyToken);
 app.use("/users", userRoutes);
-app.use("/books", bookRoutes);
 
 
 module.exports = app;
