@@ -33,12 +33,12 @@ export const ContextProvider = ({ children }) => {
     }
 
     return response;
-  }
+  };
 
-  const [toastData, setToastData] = useState({}); 
+  const [toastData, setToastData] = useState({});
 
-  const [user, setUser] = useState({ Username: '', Password: '', Email: '' });
-  
+  const [user, setUser] = useState({ Username: "", Password: "", Email: "" });
+
   return (
     <Context.Provider value={{ user, setUser, postRequest, getRequest, toastData, setToastData, imagearray,setimagearray}}>
       {children}
