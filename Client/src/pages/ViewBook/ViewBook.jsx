@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import "./ViewBook.css"
+import React, { useContext, useState } from "react";
+import "./ViewBook.css";
+import Arrow from "../../images/Arrow.png";
 import { useLocation } from "react-router-dom";
-import Modal from "react-modal"
+import Modal from "react-modal";
+import Context from "../../Context";
+import zIndex from "@mui/material/styles/zIndex";
+import SmallBook from "../../components/smallBook/SmallBook";
 function ViewBook() {
+  const{setIsModalOpen, IsModalOpen}= useContext(Context);
   const Book = useLocation().state;
-  console.log(Book)
+  console.log(Book);
+  const smallImg= Book.pages[0];
   const [index, setIndex] = useState(0);
   const [imgSrc, setImgSrc] = useState(Book.pages[0]);
-  const [IsModalOpen, setIsModalOpen] = useState(false);
   const Pictures = Book.pages;
-const author= Book.author;
+  const author = Book.author;
   const handleNext = () => {
     let nextIndex = index + 1;
     if (nextIndex >= Pictures.length) {
@@ -42,13 +47,16 @@ const author= Book.author;
       bottom: "auto",
       marginRight: "-50%",
       transform: "translate(-50%, -50%)",
-      width:"100vw",
+      zIndex: "9999",
+      width: "100vw",
+      position: "fixed",
     },
   };
   const [portrait, setPortrait] = useState();
   let portraitdiv = window.matchMedia("(orientation: portrait)");
 
   portraitdiv.addEventListener("change", function (e) {
+    console.log(e.matches);
     if (e.matches) {
       setPortrait("portrait");
       // Portrait mode
@@ -57,17 +65,25 @@ const author= Book.author;
       // Landscape
     }
   });
+  const formattedDate = new Date(Book.createdAt).toLocaleDateString();
   console.log(document.body.offsetWidth);
   return (
-    <>
-    <h1>h</h1>
-      <p>{Book.title}</p>
+    <><div id="BigContainer">
+      <h1>h</h1>
+
+<div id="TXTContainer" dir="rtl">
+      <p>שם הסופר:{Book.author}</p>
+      <p>שם הספר: {Book.title}</p>
+      <p>תאריך העלאה: {formattedDate}</p>
+      <p>תקציר:</p>
+      <div>{Book.summary}</div>
+      </div>
+<img id="SmallIMG" src={smallImg} alt="null" />
       <p>
-        <button onClick={openModal}>Open Modal</button>
+        <button  id="ModalOpener" onClick={openModal}>לחץ לפתיחת ספר</button>
       </p>
 
       <div id="BookText">
-
         <Modal
           id="Modal"
           isOpen={IsModalOpen}
@@ -89,10 +105,17 @@ const author= Book.author;
               </button>
             </div>
           ) : (
-            <div>Please rotate your screen</div>
+            <div className="Rotate">
+              <img id="Arrow" src={Arrow} alt="" />
+              <span> Please rotate your screen</span>
+            </div>
           )}
-          <button className="closeModalBTN" onClick={closeModal}>close</button>
+
+          <button className="closeModalBTN" onClick={closeModal}>
+            חזור
+          </button>
         </Modal>
+      </div>
       </div>
     </>
   );

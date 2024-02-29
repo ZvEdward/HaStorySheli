@@ -60,7 +60,7 @@ exports.getTopLikedBooks = async (req, res) => {
     let limit = req.params.limit;
     if (limit > 10) limit = 10;
 
-    const topLikedBooks = await Books.find({ approved: true })
+    const topLikedBooks = await Books.find({ approved: false })
       .sort({ likes: -1 })
       .limit(limit);
 
@@ -76,7 +76,7 @@ exports.getLatestBooks = async (req, res) => {
     let limit = req.params.limit;
     if (limit > 10) limit = 10;
 
-    const latestBooks = await Books.find({ approved: true })
+    const latestBooks = await Books.find({ approved: false })
       .sort({ createdAt: -1 })
       .limit(limit);
 

@@ -26,7 +26,7 @@ import * as React from 'react';
     // 'Profile', 
 
     function Navbar() {
-        const { getRequest, postRequest } = useContext(Context);
+        const { getRequest, postRequest,IsModalOpen,setIsModalOpen } = useContext(Context);
         const [user, setUser] = useState(null);
         const [usernameError, setUserNameError] = useState(false);
         const [passwordError, setPasswordError] = useState(false);
@@ -121,7 +121,8 @@ import * as React from 'react';
         };
 
         return (
-            <AppBar position="fixed" sx={{ bgcolor: "#2b6292" }}>
+          
+            <AppBar position="fixed" sx={{ bgcolor: "#2b6292", display: IsModalOpen ? "none" : "block" }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
 

@@ -1,3 +1,12 @@
+#BigContainer{
+    display: flex;
+    width: 99vw;
+    flex-direction: column;
+    align-items: flex-end
+
+
+
+}
 #BookText {
     display: flex;
 }
@@ -9,7 +18,15 @@
     border: 2px, black;
     width: 100%;
 }
-
+#SmallIMG{
+    background-color: transparent;
+    width: 20vw;
+    height: 30vw;
+    perspective: 1000px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
 
 .pagesBTN {
     opacity: 0.1; /* Adjust as needed */
@@ -18,31 +35,35 @@
     z-index: 3;
     width: 5%;
     border: none; /* Remove the border */
-    background-color: transparent; /* Set background color to transparent */
-    cursor: pointer; /* Add pointer cursor on hover */
+    background-color: transparent; 
+    /* cursor: pointer;  */
 }
-#closeModalBTN{
+.closeModalBTN{
 
     color: black; 
     font-size: xx-large;
 }
-
+.Rotate{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
 .BTNtext {
     opacity: 100%;
     color: black; 
     transition: opacity 0.3s ease; 
     font-size: xx-large;
 }
-
+#ModalOpener:hover {
+    background-color: #ffa500; /* Change the background color to orange when hovering */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a box-shadow effect */
+  }
 .pagesBTN:hover {
-    opacity: 40%; /* Adjust opacity on hover */
+    opacity: 70%; 
+background-color: rgb(72, 72, 72);
 }
 
-.pagesBTN:hover .BTNtext {
-    opacity: 300; /* Keep text fully opaque on hover */
-}
-
-#PreviousPage {
+#PreviousPage { 
     left: 0;
 }
 
@@ -53,13 +74,25 @@
     width: 100%;
     height: auto;
 }
-
+.showsmall{
+    display:none;
+}
+#Arrow{
+    width:50vw;
+height: auto;
+}
 @media screen and (max-width: 500px){
-    
+    .showsmall{
+        display:block;
+    }
     #Modal {
         width: 100%; 
         height: 100%; 
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0cm;
     }
 
     .PagesContainer {
@@ -70,4 +103,5 @@
         position: absolute;
         transform: rotate(90deg); /* Rotate and move out of viewport */
     }
+  
 }

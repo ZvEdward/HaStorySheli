@@ -5,6 +5,7 @@ import { createContext, useState } from "react";
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
+  const [IsModalOpen, setIsModalOpen] = useState(false);
   const getRequest = async (request) => {
     const response = await axios.get(
       `${import.meta.env.VITE_REACT_APP_CALL}${request}`,
@@ -26,7 +27,7 @@ export const ContextProvider = ({ children }) => {
       {
         withCredentials: true,
       }
-    ); 
+    );
 
     if (response?.status <= 400 && response?.data?.message) {
       setToastData({ type: "error", message: response.data.message });
@@ -40,7 +41,20 @@ export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({ Username: "", Password: "", Email: "" });
 
   return (
-    <Context.Provider value={{ user, setUser, postRequest, getRequest, toastData, setToastData, imagearray,setimagearray}}>
+    <Context.Provider
+      value={{
+        user,
+        setUser,
+        postRequest,
+        getRequest,
+        toastData,
+        setToastData,
+        imagearray,
+        setimagearray,
+        IsModalOpen,
+        setIsModalOpen,
+      }}
+    >
       {children}
     </Context.Provider>
   );
