@@ -15,8 +15,7 @@ function AddBook() {
   const [hashtags, setHashtags] = useState([]);
   const [newBook, setNewBook] = useState({});
 
-  const { getRequest, postRequest, imagearray, setimagearray } =
-    useContext(Context);
+  const { getRequest, postRequest, imagearray, setimagearray } =useContext(Context);
 
   useEffect(() => {
     getThisUser();
@@ -44,6 +43,8 @@ function AddBook() {
   };
 
   const handelSubmit = async () => {
+   
+   
     try {
       const response = await axios.post(
         "http://localhost:8000/books/createBook",
@@ -58,18 +59,21 @@ function AddBook() {
       return response.data;
     } catch (error) {
       console.error("Error:", error);
-      throw error;
+      throw error;}
+    
     }
-  };
+
+  
 
   return (
     <>
-      <div 
-      style={{ bottom: "0" }}
+      <div style={{width:"100vw",justifyContent:'center',display:'flex'}}>
+      <div id="container"
+      style={{ bottom: "0"  }}
       >
         <h2>:אזור הוספת הספרים</h2>
 
-        <div>
+        <div id= "firstsection">
           <label>:כותרת הספר</label>
           <input
             type="text"
@@ -77,17 +81,17 @@ function AddBook() {
             onChange={(e) => setTitle(e.target.value)}
             required
           />
-        </div>
+        
 
-        <div>
+            <div>
           <label>:תקציר</label>
           <textarea
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
           ></textarea>
+             </div>
         </div>
-
-        <div>
+        <div id="secondsection">
 <p>:העלה תמונות על ידי לחיצה על הכפתור למטה</p>
           <Cloudinary value={{ imagearray, setimagearray }} />
 
@@ -110,16 +114,16 @@ function AddBook() {
               </li>
             ))}
           </ul>
-        </div>
+          </div>
 
-        <div>
+        <div id="thirdsection">
           <label>:תן האשטג לספרים, בכל פעם אחד</label>
           <input
             type="text"
             value={newhashtag}
             onChange={(e) => setNewHashtag(e.target.value)}
           />
-          <button onClick={AddHashtag}>! לחץ עלי כדי להכניס את ה-האשטאג</button>
+          <button onClick={AddHashtag}>לחץ עלי כדי להכניס את ה-האשטאג!</button>
           <ul style={{ listStyle: "none", padding: 0 }}>
             {hashtags.map((item, index) => (
               <li
@@ -130,7 +134,7 @@ function AddBook() {
                   padding: "5px",
                 }}
               >
-          #{item},
+          ,{item}#
               </li>
             ))}
           </ul>
@@ -138,7 +142,7 @@ function AddBook() {
         <button onClick={handelSubmit} type="submit">
           Add Book
         </button>
-      </div>
+      </div></div>
     </>
   );
 }
