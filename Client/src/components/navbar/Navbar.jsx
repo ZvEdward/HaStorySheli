@@ -26,7 +26,7 @@ import * as React from 'react';
     // 'Profile', 
 
     function Navbar() {
-        const { getRequest, postRequest,IsModalOpen,setIsModalOpen } = useContext(Context);
+        const { getRequest, postRequest,IsModalOpen,setIsModalOpen ,activeimg} = useContext(Context);
         const [user, setUser] = useState(null);
         const [usernameError, setUserNameError] = useState(false);
         const [passwordError, setPasswordError] = useState(false);
