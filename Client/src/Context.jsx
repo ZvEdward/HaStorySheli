@@ -6,13 +6,19 @@ const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
   const getRequest = async (request) => {
-    console.log(`${import.meta.env.VITE_REACT_APP_CALL}${request}`)
-    const response = await axios.get(`${import.meta.env.VITE_REACT_APP_CALL}${request}`, {
-      withCredentials: true, 
-    });
+    const response = await axios.get(
+      `${import.meta.env.VITE_REACT_APP_CALL}${request}`,
+      {
+        withCredentials: true,
+      }
+    );
+    if (response?.status <= 400 && response?.data?.message) {
+      setToastData({ type: "error", message: response.data.message });
+    }
+
     return response;
-  }
-  
+  };
+
   const postRequest = async (request, data) => {
     const response = await axios.post(
       `${import.meta.env.VITE_REACT_APP_CALL}${request}`,
@@ -20,10 +26,15 @@ export const ContextProvider = ({ children }) => {
       {
         withCredentials: true,
       }
-    );
+    ); 
+
+    if (response?.status <= 400 && response?.data?.message) {
+      setToastData({ type: "error", message: response.data.message });
+    }
+
     return response;
   }
-  const[imagearray,setimagearray] = useState([])
+
   const [toastData, setToastData] = useState({}); 
 
   const [user, setUser] = useState({ Username: '', Password: '', Email: '' });

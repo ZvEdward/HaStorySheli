@@ -200,7 +200,7 @@ exports.verifyToken = async (req, res, next) => {
     if (!token) {
         return res
             .status(401)
-            .json({ message: "Unauthorized: No token provided" });
+            .json({success:false,type:'error', message: "Unauthorized: No token provided" });
     }
     try {
         const decodedToken = jwt.verify(token, process.env.SECRET_JWT_KEY);
@@ -208,7 +208,7 @@ exports.verifyToken = async (req, res, next) => {
         req.user = user;
         next();
     } catch (error) {
-        return res.status(401).json({ message: "Unauthorized: Invalid token" });
+        return res.status(401).json({success:false,type:'error', message: "Unauthorized: Invalid token" });
     }
 };
 
@@ -340,4 +340,25 @@ exports.getThisUser = async (req, res) => {
             error: error,
         });
     }
+};
+
+exports.checkifIlike = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const bookId = req.body.bookId;
+    const user = await Users.findById(userId);
+
+    if (!user) {
+      return res.status(404).send({ message: 'User not found', type: 'error' });
+    }
+
+    const userLikedBook = user.likedBooks.includes(bookId);
+
+    res.status(200).send({
+      liked: userLikedBook,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
 };
