@@ -2,7 +2,7 @@
 
 
 
-#container {
+.OmerTba #container {
     width: 80%; /* Fill the screen width */
     
     margin-top: 100px;
@@ -16,18 +16,18 @@
 
 }
 
-h2 {
+.OmerTba h2 {
     color: #333333; /* dark gray text color */
 }
 
-label {
+.OmerTba label {
     display: block;
     margin-bottom: 5px;
     color: #333333;
 }
 
-input[type="text"],
-textarea {
+.OmerTba input[type="text"],
+.OmerTba textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #cccccc;
@@ -36,33 +36,33 @@ textarea {
     box-sizing: border-box; /* include padding and border in the width */
 }
 
-button {
+.OmerTba button {
     background-color: #007bff; /* blue button */
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
 }
 
-button:hover {
+.OmerTba button:hover {
     background-color: #0056b3; /* darker blue on hover */
 }
 
-ul {
+.OmerTba ul {
     list-style: none;
     padding: 0;
 }
 
-ul li {
+.OmerTba ul li {
     display: inline-block;
     margin: 5px;
     padding: 5px;
 }
 
-ul li img {
+.OmerTba ul li img {
     display: inline-block;
     width: 5vw;
 }
 
-textarea {
+.OmerTba textarea {
     height: 100px; /* set a fixed height for the textarea */
 }

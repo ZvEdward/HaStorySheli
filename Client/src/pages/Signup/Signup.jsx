@@ -19,7 +19,7 @@ import Context from "../../Context";
 import Modal from "react-modal"
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-
+import CloudinaryProfileButton from "../../components/CloudinaryProfileButton";
 
 
 
@@ -27,7 +27,7 @@ const defaultTheme = createTheme();
 
 
 export default function Signup() {
-    const { getRequest, postRequest } = useContext(Context);
+    const { getRequest, postRequest,activeimg,setactiveimg } = useContext(Context);
     const navigate = useNavigate();
     const createUser = async ({ username, displayName, email, password, profileImg, birthDate, about }) => {
         try {
@@ -59,7 +59,7 @@ export default function Signup() {
             displayName: data.get('displayName'),
             email: data.get('email'),
             password: data.get('password'),
-            profileImg: data.get('profileImg'),
+            profileImg: activeimg,
             birthDate: data.get('birthDate'),
             about: data.get('about'),
         });
@@ -170,13 +170,7 @@ export default function Signup() {
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <TextField
-                                            fullWidth
-                                            id="profileImg"
-                                            label="תמונת פרופיל"
-                                            name="profileImg"
-                                            autoComplete="profileImg"
-                                        />
+                                        <CloudinaryProfileButton value={{ activeimg, setactiveimg }} />
                                     </Grid>
                                     <Grid item xs={8}>
                                         <LocalizationProvider dateAdapter={AdapterDayjs}>
