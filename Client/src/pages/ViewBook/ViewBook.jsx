@@ -60,9 +60,9 @@ const author= Book.author;
   console.log(document.body.offsetWidth);
   return (
     <>
-      <p>
-        <button onClick={openModal}>Open Modal</button>
-      </p>
+      
+        <button style={{margin: '80px'}} onClick={openModal}>Open Modal</button>
+      
 
       <div id="BookText">
 

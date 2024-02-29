@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SmallBook.css";
 import Context from "../../Context";
@@ -6,7 +6,8 @@ import Context from "../../Context";
 function SmallBook({ Book }) {
   const { title, pages, author, createdAt, likes } = Book || {};
   const navigate = useNavigate();
-  const { user, setToastData, postRequest } = useContext(Context);
+  const { setToastData, postRequest } = useContext(Context);
+  const [Ilike, setIlike] = useState(false);
 
   if (!Book) {
     return null;
@@ -20,11 +21,9 @@ function SmallBook({ Book }) {
     navigate("/ViewBook", { state: Book });
   };
 
-  const CheckIfILike = () => {
-    if (!user || !user.likedBooks || !Array.isArray(user.likedBooks)) {
-      return false;
-    }
-    return user.likedBooks.includes(Book._id);
+  const CheckIfILike = async () => {
+    const response = await postRequest("/users/checkifIlike", { bookId: Book._id });
+    setIlike(response.data.liked);
   };
 
   const CheckLike = async () => {
@@ -34,36 +33,54 @@ function SmallBook({ Book }) {
         type: response.data.type,
         content: response.data.message,
       });
+
+      if (response.data.type === "success") {
+        setIlike(true);
+        return true;
+      } else if (response.data.message.includes("removed")) {
+        setIlike(false);
+        return false;
+      }
     } catch (error) {
+      if (!error.response.data.success) {
+        setToastData({
+          type: error.response.data.type,
+          content: "המשתמש עדיין לא מחובר",
+        });
+      }
       console.error("Error while liking book:", error);
     }
   };
 
+  useEffect(() => {
+    CheckIfILike();
+  }, [likes]);
+
   return (
     <div>
-    <div className="book-container">
-      <p className="book-title">{title}</p>
-      <div className="flip-card" onClick={handleBookClick}>
-        <div className="flip-card-inner">
-          <div className="flip-card-front">
-            <img src={FrontImg} alt="Book Cover" />
-          </div>
-          <div className="flip-card-back">
-            <div className="back-container">
-              <img className="backimg" src={BackImg} alt="" />
+      <div className="book-container">
+        <p className="book-title">{title}</p>
+        <div className="flip-card" onClick={handleBookClick}>
+          <div className="flip-card-inner">
+            <div className="flip-card-front">
+              <img src={FrontImg} alt="Book Cover" />
+            </div>
+            <div className="flip-card-back">
+              <div className="back-container">
+                <img className="backimg" src={BackImg} alt="" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="book-details">
-        <div className="book-metadata">
-          <span className="book-likes" onClick={CheckLike}>
-            {CheckIfILike() ? `❤️` : `🖤`}:{likes}
-          </span>
-          <span className="book-date">{formattedDate}</span>
+        <div className="book-details">
+          <div className="book-metadata">
+            <span className="book-likes" onClick={CheckLike}>
+              {Ilike ? `❤️:${likes+1}` : `🖤:${likes}`}
+            </span>
+            <span className="book-date">{formattedDate}</span>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

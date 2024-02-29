@@ -121,7 +121,7 @@ import * as React from 'react';
         };
 
         return (
-            <AppBar position="fixed" sx={{ bgcolor: "#00802D" }}>
+            <AppBar position="fixed" sx={{ bgcolor: "#2b6292" }}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
 
@@ -363,9 +363,9 @@ import * as React from 'react';
                                                 <Button onClick={() => { loginUser(inputUserName, inputPassword) }}
                                                     variant="contained" endIcon={<LoginIcon />} fullWidth sx={{
                                                         ':hover': {
-                                                            bgcolor: "#37F715",
+                                                            bgcolor: "#2b6292",
                                                             color: 'white',
-                                                        }, bgcolor: "#00802D",
+                                                        }, bgcolor: "#2b6292",
                                                     }}
                                                 >
                                                     הכנס

@@ -6,6 +6,7 @@ import woman from "../../images/womanholdingphone.jpg";
 import { Typography } from "@mui/material";
 import Context from "../../Context";
 import SmallBook from "../../components/smallBook/SmallBook";
+import Footer from "../../components/Footer/Footer";
 
 function Homepage() {
   const { getRequest } = useContext(Context);
@@ -62,13 +63,26 @@ function Homepage() {
           <img className="firsthomepageimg" src={woman} alt="" />
         </div>
       </div>
+      <Typography
+          style={{
+            width:"100vw",
+            textAlign: "center",
+            backgroundColor:"#2b6292"
+          }}
+          dir="rtl"
+          variant="h3"
+        >
+          <b>אהובים ביותר</b>
+        </Typography>
       <div className="mostLiked">
+       
         {mostLikedBooks.map((item, index) => (
           <div key={index} style={{ width: "20%" }}>
             <SmallBook Book={item} />
           </div>
         ))}
       </div>
+      <Footer/>
     </>
   );
 }

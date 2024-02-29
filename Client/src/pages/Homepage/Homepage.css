@@ -23,7 +23,8 @@
   }
   .mostLiked {
     display: flex;
-    background-color: rgb(92, 179, 255);
+    background-color:#2b6292;
+    flex-direction: row-reverse;
   justify-content: space-evenly;
   flex-wrap: nowrap; /* Ensures items are in a single row without wrapping */
   overflow-x: auto;

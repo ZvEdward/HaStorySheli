@@ -1,0 +1,146 @@
+.footer-container {
+  background-color: #2b6292;
+  color: #fff;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 30px 0;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footer-top-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.top-right-random {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.top-right-policies {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+.top-right-policies h2 {
+  color: #d0d0ff;
+}
+
+.footer-top-right p {
+  transition: transform 0.4s ease;
+  transform-origin: center;
+}
+
+.footer-top-right p:hover {
+  transform: scale(1.35);
+  cursor: pointer;
+  color: #d0d0ff;
+}
+
+.footer-bottom p {
+  margin: 0;
+  padding: 25px;
+}
+
+.footer-bottom-images img {
+  margin: 0 12px;
+  transition: transform 0.4s ease;
+}
+
+.footer-bottom-images img:hover {
+  transform: scale(1.35);
+  cursor: pointer;
+}
+
+.footer-top-left {
+  margin-left: 30px;
+}
+
+.footer-top-left .title {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.footer-top-left .title h2 {
+  margin-left: 15px;
+}
+
+.footer-top-left p {
+  font-size: 18px;
+  line-height: 2;
+  margin: 2rem 0 0 0;
+}
+
+.footer-top-left a {
+  text-decoration: none;
+  color: #fff;
+}
+
+@media screen and (max-width: 700px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding: 30px 1rem;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-top-left .title h2 {
+    margin: 0 0.7rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+  }
+
+  .footer-top-left .title {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+
+  .title p {
+    padding: 2rem;
+  }
+
+
+  .footer-top-right {
+    margin-top: 1rem;
+  }
+
+  .top-right-policies {
+    align-items: center;
+  }
+
+  .top-right-random {
+    align-items: center;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+  }
+
+  .footer-bottom p {
+    padding: 15px;
+  }
+
+  .footer-bottom-images {
+    padding-bottom: 1.5rem;
+  }
+}
