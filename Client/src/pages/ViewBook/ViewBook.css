@@ -1,25 +1,31 @@
-#BigContainer{
+#BigContainer {
     display: flex;
-    width: 99vw;
+    width: 100vw;
+    justify-content: space-around;
+    margin-top: 10vh;
+}
+
+.textdiv {
+    flex: 1;
+    display: flex;
     flex-direction: column;
-    align-items: flex-end
-
-
-
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
-#BookText {
+
+.textdiv p {
+    margin: 10px 0;
+}
+
+.imagediv {
+    flex: 1;
     display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.PagesContainer {
-    display: flex;
-    position: relative; /* Change to relative */
-    z-index: 2;
-    border: 2px, black;
-    width: 100%;
-}
-#SmallIMG{
-    background-color: transparent;
+#SmallIMG {
     width: 20vw;
     height: 30vw;
     perspective: 1000px;
@@ -28,80 +34,100 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+#BookText {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.PagesContainer {
+    display: flex;
+    position: relative;
+    z-index: 2;
+    border: 2px solid black;
+    width: 100%;
+}
+
 .pagesBTN {
-    opacity: 0.1; /* Adjust as needed */
+    opacity: 0.1;
     position: absolute;
     height: 100%;
     z-index: 3;
     width: 5%;
-    border: none; /* Remove the border */
-    background-color: transparent; 
-    /* cursor: pointer;  */
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
 }
-.closeModalBTN{
 
-    color: black; 
+.closeModalBTN {
+    color: black;
     font-size: xx-large;
+    margin-top: 10px;
 }
-.Rotate{
-display: flex;
-flex-direction: column;
-align-items: center;
+
+.Rotate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
+
 .BTNtext {
-    opacity: 100%;
-    color: black; 
-    transition: opacity 0.3s ease; 
+    opacity: 1;
+    color: black;
     font-size: xx-large;
-}
-#ModalOpener:hover {
-    background-color: #ffa500; /* Change the background color to orange when hovering */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a box-shadow effect */
-  }
-.pagesBTN:hover {
-    opacity: 70%; 
-background-color: rgb(72, 72, 72);
+    transition: opacity 0.3s ease;
 }
 
-#PreviousPage { 
+#ModalOpener:hover {
+    background-color: #ffa500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pagesBTN:hover {
+    opacity: 0.7;
+    background-color: rgb(72, 72, 72);
+}
+
+#PreviousPage {
     left: 0;
 }
 
 #nextPage {
     right: 0;
 }
-#Page{
+
+#Page {
     width: 100%;
     height: auto;
 }
-.showsmall{
-    display:none;
+
+.showsmall {
+    display: none;
 }
-#Arrow{
-    width:50vw;
-height: auto;
+
+#Arrow {
+    width: 50vw;
+    height: auto;
 }
-@media screen and (max-width: 500px){
-    .showsmall{
-        display:block;
-    }
-    #Modal {
-        width: 100%; 
-        height: 100%; 
-        display: flex;
+
+@media screen and (max-width: 500px) {
+    #BigContainer {
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        margin-left: 0cm;
     }
 
-    .PagesContainer {
+    .textdiv,
+    .imagediv {
         width: 100%;
-        height: 100vh; /* Make the container full-screen */
-        top: 0;
-        left: 0;
-        position: absolute;
-        transform: rotate(90deg); /* Rotate and move out of viewport */
+        align-items: center;
+        text-align: center;
     }
-  
+
+    #SmallIMG {
+        width: 80vw;
+        height: auto;
+    }
 }

@@ -68,20 +68,20 @@ function ViewBook() {
   const formattedDate = new Date(Book.createdAt).toLocaleDateString();
   console.log(document.body.offsetWidth);
   return (
-    <><div id="BigContainer">
-      <h1>h</h1>
-
-<div id="TXTContainer" dir="rtl">
-      <p>שם הסופר:{Book.author}</p>
+    <><div style={{width:'100vw', display:'flex',justifyContent:'space-around', flexDirection:'row-reverse', alignItems:'center'}} id="BigContainer">
+      <div className="textdiv">
+<div  id="TXTContainer" dir="rtl">
       <p>שם הספר: {Book.title}</p>
       <p>תאריך העלאה: {formattedDate}</p>
       <p>תקציר:</p>
       <div>{Book.summary}</div>
       </div>
-<img id="SmallIMG" src={smallImg} alt="null" />
-      <p>
-        <button  id="ModalOpener" onClick={openModal}>לחץ לפתיחת ספר</button>
-      </p>
+      </div>
+      <div className="imagediv">
+<img id="SmallIMG" src={smallImg} alt="null" onClick={openModal} />
+
+</div>
+   
 
       <div id="BookText">
         <Modal
@@ -117,6 +117,8 @@ function ViewBook() {
         </Modal>
       </div>
       </div>
+      <p>
+      </p>
     </>
   );
 }
