@@ -362,3 +362,21 @@ exports.checkifIlike = async (req, res) => {
     res.status(500).send({ message: 'Internal Server Error' });
   }
 };
+exports.getMyBooks = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const user = await Users.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found', type: 'error' });
+    }
+    const myBookIds = user.myBooks;
+    const myBooks = await Books.find({ _id: { $in: myBookIds } });
+
+    res.status(200).json({ myBooks });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};

@@ -4,8 +4,7 @@ import logo from "../../images/Logo.png";
 import axios from "axios";
 import smallBook from "../../components/smallBook/SmallBook.jsx"
 function MainPage() {
-  const [LikedArr, setLikedArr] = useState([]);
-  const [NewArr, setNewArr] = useState([]);
+  const [myBooks, setMyBooks] = useState();
   
   function fetchMostLiked() {
     axios
@@ -17,16 +16,22 @@ function MainPage() {
         console.error("Error fetching data:", error);
       });
   }
-  function fetchNewBooks() {
-    axios
-      .get("newbooks")
-      .then((response) => {
-        setNewArr(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }
+  const getMostLike = async () => {
+    try {
+      const response = await getRequest(`/users/getMyBooks`);
+      if (Array.isArray(response?.data)) {
+        setMostLikedBooks(response?.data);
+      } else {
+        console.error("Invalid response format:", response?.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  useEffect(() => {
+    getMostLike();
+  }, []);
+
   return (
     <div style={{ textAlign: "center" }}>
       <div >

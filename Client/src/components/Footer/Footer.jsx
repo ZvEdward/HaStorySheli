@@ -1,12 +1,12 @@
 import React from "react";
 import "./Footer.css";
 
-//Footer images
+// Footer images
 import facebook from "../../images/facebook-footer-white.png";
 import twitter from "../../images/twitter-footer-white.png";
 import linkedin from "../../images/linkedin-footer-white.png";
 import youtube from "../../images/youtube-footer-white.png";
-import appLogo from "../../images/navbar-icon.png";
+import appLogo from "../../images/Logo-Icon.png";
 
 export default function Footer() {
   return (
@@ -16,33 +16,32 @@ export default function Footer() {
           <a href="#">
             <div className="title">
               <img src={appLogo} style={{ width: "50px", height: "50px" }} />
-              <h2>BudgetBuddy</h2>
+              <h2>הסטורי שלי</h2>
             </div>
           </a>
           <p>
-            Could your money be working harder for you? <br /> There’s a richer
-            way to wealth.
+            האם הכסף שלך יכול לעבוד קשה יותר עבורך? <br /> יש דרך עשירה יותר
+            לשוק על ידי הקריאה והכתיבה של ספרים.
           </p>
         </div>
         <div className="footer-top-right">
           <div className="top-right-policies">
-            <h2>Policies</h2>
-            <p>Privacy Policy</p>
-            <p>GDPR Policy</p>
-            <p>Cookie Policy</p>
+            <h2>מדיניות</h2>
+            <p>מדיניות פרטיות</p>
+            <p>GDPR מדיניות </p>
+            <p>מדיניות קובצי עוגיות</p>
           </div>
           <div className="top-right-random">
-            <p>Career</p>
-            <p>Blog</p>
-            <p>Portfolio</p>
-            <p>Support</p>
-            <p>Our Team</p>
+            <p>קריירה</p>
+            <p>בלוג</p>
+            <p>תמיכה</p>
+            <p>צוותנו</p>
           </div>
         </div>
       </div>
       <hr />
       <div className="footer-bottom">
-        <p>© 2023 BudgetBuddy | All Rights Reserved.</p>
+        <p>© 2024 HaStorySheli | כל הזכויות שמורות</p>
         <div className="footer-bottom-images">
           <img src={facebook} style={{ width: "28px", height: "28px" }} />
           <img src={twitter} style={{ width: "28px", height: "28px" }} />
