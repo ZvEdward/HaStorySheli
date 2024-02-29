@@ -6,6 +6,7 @@ import ViewBook from "./pages/ViewBook/ViewBook";
 import MainPage from "./pages/mainpage/MainPage";
 import Homepage from "./pages/Homepage/Homepage";
 import Signup from "./pages/Signup/Signup";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/ViewBook" element={<ViewBook />} />
           <Route path="/SignUp" element={<Signup />} />
+          <Route path="/Profile" element={<Profile />} />
           <Route path="/*" element={<MainPage />} />
         </Route>
       </Routes>
