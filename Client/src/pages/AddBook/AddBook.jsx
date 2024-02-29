@@ -15,7 +15,7 @@ function AddBook() {
     const [hashtags, setHashtags] = useState([]);
     const [newBook, setNewBook] = useState({});
 
-    const { getRequest, postRequest, imagearray, setimagearray } = useContext(Context);
+    const { getRequest, postRequest, imagearray, setimagearray, setToastData} = useContext(Context);
 
     useEffect(() => {
         getThisUser();
@@ -25,17 +25,11 @@ function AddBook() {
     const getThisUser = async () => {
         try {
             const response = await getRequest("/users/getThisUser");
-            console.log(response.data.user);
             setUser(response.data.user);
             setUserId(user._id);
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const AddNewPage = () => {
-        setPages([...pages, newPage]);
-        setNewPage("");
     };
 
     const AddHashtag = () => {
@@ -51,10 +45,12 @@ function AddBook() {
                 userId: user._id,
                 summary,
                 hashtags,
-            });
+            })
+            console.log(response.data);
+            setToastData({type: title? "success":"error", content: title? `Added Book ${title}`: "Error while adding book"})
             return response.data;
         } catch (error) {
-            console.error("Error:", error);
+          setToastData({type:"error", content: "Error while adding book"})
             throw error;
         }
     };

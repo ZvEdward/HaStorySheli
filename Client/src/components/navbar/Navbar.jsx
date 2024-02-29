@@ -33,7 +33,7 @@ import * as React from 'react';
         const [loginError, setLoginError] = useState(false);
         useEffect(() => {
             getThisUser();
-        }, []);
+        }, [activeimg]);
 
         const getThisUser = async () => {
             try {

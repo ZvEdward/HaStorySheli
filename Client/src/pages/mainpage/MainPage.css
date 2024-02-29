@@ -8,9 +8,13 @@
   /* Style each book container */
   .mostLiked {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     margin-bottom: 10vh;
+  }
+  .book
+  {
+    margin: 10px;
   }
   .title {
     display: flex;

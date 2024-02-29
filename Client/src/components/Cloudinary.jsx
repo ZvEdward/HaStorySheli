@@ -37,15 +37,15 @@ try {
 };
 
 return (
-    <div    >
+    <div >
     <label htmlFor="file-input">
     <Button
-        variant="outlined"
-        size="small"
+        sx={{padding:'10px'}}
+        variant="contained"
+        size="large"
         component="span"
-        endIcon={<ChangeIcon />}
         >
-        Change
+        העלה עמוד
         </Button>
     </label>
     <Input
@@ -54,7 +54,6 @@ return (
         inputProps={{ style: { display: "none" } }}
         onChange={handleFileChange}
     />
-   
     </div>
 );
 };

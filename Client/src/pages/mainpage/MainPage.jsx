@@ -10,6 +10,19 @@ function MainPage() {
   const [lastBooks, setLastBooks] = useState([]);
   const [mostLikedBooks, setMostLikedBooks] = useState([]);
   const { getRequest } = useContext(Context);
+  useEffect(() => {
+    getThisUser();
+}, []);
+
+const getThisUser = async () => {
+    try {
+        const response = await getRequest("/users/getThisUser");
+        console.log(response.data.user);
+        setUser(response.data.user);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
   const getMyBooks = async () => {
     try {
