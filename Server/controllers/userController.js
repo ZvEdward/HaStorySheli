@@ -59,6 +59,33 @@ exports.createUser = async (req, res) => {
     }
 };
 
+exports.updateThisUser = async (req, res) => {
+    try {
+        const {
+            username,
+            displayName,
+            email,
+            password,
+            profileImg,
+            birthDate,
+            about,
+        } = req.body;
+        const newUser = await Users.updateOne({
+            username,
+            displayName,
+            email,
+            profileImg,
+            birthDate,
+            about,
+            // password: hashedPassword,
+        });
+        res.send(newUser);
+    } catch (error) {
+      console.error("Error editing User:", error);
+      res.status(500).send("Internal Server Error");
+    }
+  };
+
 async function sendEmailVerification(toEmail, emailToken) {
     try {
         const transporter = nodemailer.createTransport({
@@ -158,25 +185,6 @@ exports.signout = async (req, res) => {
     }
 };
 
-// exports.editUserById = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const result = await Users.findByIdAndUpdate(id, {
-//       username: req.body?.username,
-//       password: req.body?.password,
-//       email: req.body?.email,
-//     });
-
-//     if (result) {
-//       res.send("User edited successfully.");
-//     } else {
-//       res.send("User not found or not edited.");
-//     }
-//   } catch (error) {
-//     console.error("Error editing User:", error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// };
 
 // exports.deleteById = async (req, res) => {
 //   try {
@@ -332,7 +340,6 @@ exports.toggleLikedBook = async (req, res) => {
 
 exports.getThisUser = async (req, res) => {
     try {
-        console.log(req.user);
         res.status(202).json({ user: req.user });
     } catch (error) {
         res.status(407).json({
