@@ -1,4 +1,3 @@
-// Homepage.jsx
 import React, { useContext, useState, useEffect } from "react";
 import Context from "../../Context";
 import axios from "axios";

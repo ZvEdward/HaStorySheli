@@ -36,7 +36,7 @@ export const ContextProvider = ({ children }) => {
   };
 
   const [toastData, setToastData] = useState({});
-
+  const [imagearray, setimagearray] = useState([]);
   const [user, setUser] = useState({ Username: "", Password: "", Email: "" });
 
   return (
