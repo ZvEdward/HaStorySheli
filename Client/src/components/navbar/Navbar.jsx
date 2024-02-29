@@ -193,6 +193,12 @@ import * as React from 'react';
                                         <Typography textAlign="center" onClick={() => { navigate("/profile"), handleCloseNavMenu }}>פרופיל</Typography>
                                     </MenuItem>
                                 )}
+
+                                {isConnected && (
+                                    <MenuItem onClick={handleCloseNavMenu}>
+                                        <Typography textAlign="center" onClick={() => { navigate("/addBook"), handleCloseNavMenu }}>הוסף ספר</Typography>
+                                    </MenuItem>
+                                )}
                             </Menu>
 
                         </Box>
@@ -248,6 +254,16 @@ import * as React from 'react';
                                         sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
                                         פרופיל
+                                    </Button>
+                                )
+                            }
+                            {
+                                isConnected && (
+                                    <Button
+                                        onClick={() => { navigate("/addBook"), handleCloseNavMenu }}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        הוסף ספר
                                     </Button>
                                 )
                             }

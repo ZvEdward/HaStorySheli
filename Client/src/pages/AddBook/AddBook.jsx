@@ -3,147 +3,129 @@ import Context from "../../Context";
 import axios from "axios";
 import Cloudinary from "../../components/Cloudinary";
 import "./AddBook.css";
+
 function AddBook() {
-  const [title, setTitle] = useState("");
-  const [pages, setPages] = useState([]);
-  const [newPage, setNewPage] = useState("");
-  const [user, setUser] = useState({});
-  const [userId, setUserId] = useState();
-  const [summary, setSummary] = useState("");
-  const [newhashtag, setNewHashtag] = useState("");
-  const [hashtags, setHashtags] = useState([]);
-  const [newBook, setNewBook] = useState({});
+    const [title, setTitle] = useState("");
+    const [pages, setPages] = useState([]);
+    const [newPage, setNewPage] = useState("");
+    const [user, setUser] = useState({});
+    const [userId, setUserId] = useState();
+    const [summary, setSummary] = useState("");
+    const [newhashtag, setNewHashtag] = useState("");
+    const [hashtags, setHashtags] = useState([]);
+    const [newBook, setNewBook] = useState({});
 
-  const { getRequest, postRequest, imagearray, setimagearray } =useContext(Context);
+    const { getRequest, postRequest, imagearray, setimagearray } = useContext(Context);
 
-  useEffect(() => {
-    getThisUser();
-    console.log(imagearray);
-  }, [imagearray]);
+    useEffect(() => {
+        getThisUser();
+        console.log(imagearray);
+    }, [imagearray]);
 
-  const getThisUser = async () => {
-    try {
-      const response = await getRequest("/users/getThisUser");
-      console.log(response.data.user);
-      setUser(response.data.user);
-      setUserId(user._id);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const AddNewPage = () => {
-    setPages([...pages, newPage]);
-    setNewPage("");
-  };
-
-  const AddHashtag = () => {
-    setHashtags([...hashtags, newhashtag]);
-    setNewHashtag("");
-  };
-
-  const handelSubmit = async () => {
-   
-   
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/books/createBook",
-        {
-          title,
-          pages: imagearray,
-          userId: user._id,
-          summary,
-          hashtags,
+    const getThisUser = async () => {
+        try {
+            const response = await getRequest("/users/getThisUser");
+            console.log(response.data.user);
+            setUser(response.data.user);
+            setUserId(user._id);
+        } catch (error) {
+            console.log(error);
         }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error:", error);
-      throw error;}
-    
-    }
+    };
 
-  
+    const AddNewPage = () => {
+        setPages([...pages, newPage]);
+        setNewPage("");
+    };
 
-  return (
-    <>
-      <div style={{width:"100vw",justifyContent:'center',display:'flex'}}>
-      <div id="container"
-      style={{ bottom: "0"  }}
-      >
-        <h2>:אזור הוספת הספרים</h2>
+    const AddHashtag = () => {
+        setHashtags([...hashtags, newhashtag]);
+        setNewHashtag("");
+    };
 
-        <div id= "firstsection">
-          <label>:כותרת הספר</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-        
+    const handelSubmit = async () => {
+        try {
+            const response = await axios.post("http://localhost:8000/books/createBook", {
+                title,
+                pages: imagearray,
+                userId: user._id,
+                summary,
+                hashtags,
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+            throw error;
+        }
+    };
 
-            <div>
-          <label>:תקציר</label>
-          <textarea
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          ></textarea>
-             </div>
-        </div>
-        <div id="secondsection">
-<p>:העלה תמונות על ידי לחיצה על הכפתור למטה</p>
-          <Cloudinary value={{ imagearray, setimagearray }} />
+    return (
+        <>
+            <div className="OmerTba" style={{ width: "100vw", justifyContent: "center", display: "flex" }}>
+                <div id="container" style={{ bottom: "0" }}>
+                    <h2>:אזור הוספת הספרים</h2>
 
-          <p>:תמונות שהתווספו </p>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {imagearray.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  display: "inline-block",
-                  margin: "5px",
-                  padding: "5px",
-                }}
-              >
-                 <img src={imagearray[index]} alt="" 
-                  style={{
-                  display: "inline-block",
-                  
-                }}/>
-              </li>
-            ))}
-          </ul>
-          </div>
+                    <div id="firstsection">
+                        <label>:כותרת הספר</label>
+                        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
-        <div id="thirdsection">
-          <label>:תן האשטג לספרים, בכל פעם אחד</label>
-          <input
-            type="text"
-            value={newhashtag}
-            onChange={(e) => setNewHashtag(e.target.value)}
-          />
-          <button onClick={AddHashtag}>לחץ עלי כדי להכניס את ה-האשטאג!</button>
-          <ul style={{ listStyle: "none", padding: 0 }}>
-            {hashtags.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  display: "inline-block",
-                  margin: "5px",
-                  padding: "5px",
-                }}
-              >
-          ,{item}#
-              </li>
-            ))}
-          </ul>
-        </div>
-        <button onClick={handelSubmit} type="submit">
-          Add Book
-        </button>
-      </div></div>
-    </>
-  );
+                        <div>
+                            <label>:תקציר</label>
+                            <textarea value={summary} onChange={(e) => setSummary(e.target.value)}></textarea>
+                        </div>
+                    </div>
+
+                    <div id="secondsection">
+                        <p>:העלה תמונות על ידי לחיצה על הכפתור למטה</p>
+                        <Cloudinary value={{ imagearray, setimagearray }} />
+
+                        <p>:תמונות שהתווספו </p>
+                        <ul style={{ listStyle: "none", padding: 0 }}>
+                            {imagearray.map((item, index) => (
+                                <li
+                                    key={index}
+                                    style={{
+                                        display: "inline-block",
+                                        margin: "5px",
+                                        padding: "5px",
+                                    }}
+                                >
+                                    <img src={imagearray[index]} alt="" style={{ display: "inline-block" }} />
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <div id="thirdsection">
+                        <label>:תן האשטג לספרים, בכל פעם אחד</label>
+                        <input
+                            type="text"
+                            value={newhashtag}
+                            onChange={(e) => setNewHashtag(e.target.value)}
+                        />
+                        <button onClick={AddHashtag}>לחץ עלי כדי להכניס את ה-האשטאג!</button>
+                        <ul style={{ listStyle: "none", padding: 0 }}>
+                            {hashtags.map((item, index) => (
+                                <li
+                                    key={index}
+                                    style={{
+                                        display: "inline-block",
+                                        margin: "5px",
+                                        padding: "5px",
+                                    }}
+                                >
+                                    ,{item}#
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <button onClick={handelSubmit} type="submit">
+                        Add Book
+                    </button>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default AddBook;
