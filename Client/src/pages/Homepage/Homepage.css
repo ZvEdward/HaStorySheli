@@ -21,9 +21,9 @@
     margin: 2rem;
     width: 40vw;
   }
-  .mostLiked {
+  .mostLikeda {
     display: flex;
-    background-color:#2b6292;
+    background-color:#2b629262;
     flex-direction: row-reverse;
   justify-content: space-evenly;
   flex-wrap: nowrap; /* Ensures items are in a single row without wrapping */

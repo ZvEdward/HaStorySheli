@@ -64,3 +64,17 @@ exports.getTopLikedBooks = async (req, res) => {
     res.status(500).send({ message: 'Internal Server Error' });
   }
 };
+exports.getLatestBooks = async (req, res) => {
+  try {
+    let limit = req.params.limit;
+    if (limit > 10) limit = 10;
+
+    const latestBooks = await Books.find().sort({ createdAt: -1 }).limit(limit);
+
+    res.status(200).send(latestBooks);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Internal Server Error' });
+  }
+};
+

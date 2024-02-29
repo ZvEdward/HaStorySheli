@@ -67,14 +67,14 @@ function Homepage() {
           style={{
             width:"100vw",
             textAlign: "center",
-            backgroundColor:"#2b6292"
+            backgroundColor:"#2b629262"
           }}
           dir="rtl"
           variant="h3"
         >
           <b>אהובים ביותר</b>
         </Typography>
-      <div className="mostLiked">
+      <div className="mostLikeda">
        
         {mostLikedBooks.map((item, index) => (
           <div key={index} style={{ width: "20%" }}>

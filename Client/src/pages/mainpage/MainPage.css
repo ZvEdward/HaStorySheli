@@ -1,0 +1,33 @@
+/* Add some space between the sections */
+.section {
+    padding-top: 15vw;
+    width: 100vw;
+    background-color: #2b629262 ;
+  }
+  
+  /* Style each book container */
+  .mostLiked {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 10vh;
+  }
+  .title {
+    display: flex;
+    justify-content: center;
+  }
+  /* Optional: Add some styling for the hr element */
+  .hr-divider {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  
+  /* Style the h1 elements */
+  .mostLiked h1 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  

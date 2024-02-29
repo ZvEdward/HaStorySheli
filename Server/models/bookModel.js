@@ -6,7 +6,7 @@ const bookSchema = new mongoose.Schema({
   },
   pages: {
     type: Array,
-    required: false,
+    required: true,
   },
   approved: {
     type: Boolean,
