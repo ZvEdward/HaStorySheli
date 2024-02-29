@@ -1,26 +1,16 @@
 import { useState, useEffect, useContext } from "react";
 import React from "react";
 import logo from "../../images/Logo.png";
-import axios from "axios";
-import smallBook from "../../components/smallBook/SmallBook.jsx"
+import Context from "../../Context.jsx";
+import SmallBook from "../../components/smallBook/SmallBook.jsx";
 function MainPage() {
   const [myBooks, setMyBooks] = useState();
-  
-  function fetchMostLiked() {
-    axios
-      .get("mostliked")
-      .then((response) => {
-        setLikedArr(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }
-  const getMostLike = async () => {
+  const {getRequest} =useContext(Context);
+  const getMyBooks = async () => {
     try {
       const response = await getRequest(`/users/getMyBooks`);
-      if (Array.isArray(response?.data)) {
-        setMostLikedBooks(response?.data);
+      if (Array.isArray(response?.myBooks)) {
+        setMyBooks(response?.myBooks);
       } else {
         console.error("Invalid response format:", response?.data);
       }
@@ -29,7 +19,7 @@ function MainPage() {
     }
   };
   useEffect(() => {
-    getMostLike();
+    getMyBooks();
   }, []);
 
   return (
@@ -46,26 +36,12 @@ function MainPage() {
 
       <div>
         <p>הכי אהובים</p>
-        <ul>
-          {LikedArr.map((item, index) => (
-            <div key={index}>
-              <smallBook Book={LikedArr[index]} onClick={OpenBook(LikedArr[index])} />
-            </div>
-            
-          ))}
-        </ul>
+        
         <hr />
       </div>
       <div>
         <p>ספרים חדשים</p>
-        <ul>
-          {NewArr.map((item, index) => (
-            <div key={index}>
-              <SmallBook Book={NewArr[index]} />
-            </div>
-            
-          ))}
-        </ul>
+        
       </div>
     </div>
   );
