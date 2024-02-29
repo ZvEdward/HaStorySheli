@@ -7,6 +7,7 @@ import { Typography } from "@mui/material";
 import Context from "../../Context";
 import SmallBook from "../../components/smallBook/SmallBook";
 import Footer from "../../components/Footer/Footer";
+import manwriting from "../../images/manwriting.jpg";
 
 function Homepage() {
   const { getRequest } = useContext(Context);
@@ -52,16 +53,39 @@ function Homepage() {
               }}
               dir="rtl"
               variant="h6"
-            >
-              ללמוד מאחרים הוא לראות את העולם מנקודת מבט שונה, להעשיר את הידע
-              ולהתרחיש תרבות שונה. דרך הקריאה אנו נכנסים לעולמם של סופרים,
-              מחשבותיהם ותפיסת העולם הייחודית שלהם, ובכך מרחיבים את חשיבתנו
-              ומפתחים רגישות אמפתיה חדשה
+            >הסיפור שלך כשהראה למישהו אחר, הצטרפו אלינו לקהילה של יוצרים וקוראים אשר תומכים ומחזקים אחד את השני, העלו ושתפו את סיפורכם, תנו לקהילה שלנו להיות הנקודת תמיכה שלכם ואפילו תהוו גורם משמעותי להתמודדות של מישהו אחר.
             </Typography>
           </div>
 
-          <img className="firsthomepageimg" src={woman} alt="" />
+          <img className="firsthomepageimg" src={manwriting} alt="" />
         </div>
+      </div>
+      <div className="secondhomepage">
+          <div className="firsthomepagetext">
+            <Typography
+              style={{
+                color: "black",
+                mr: "1px",
+              }}
+              dir="rtl"
+              variant="h2"
+            >
+              <b>הסטורי שלהם</b>
+            </Typography>
+            <Typography
+              style={{
+                color: "black",
+                mr: "1px",
+              }}
+              dir="rtl"
+              variant="h6"
+            >
+              
+דרך קריאה אנו נכנסים לעולם של הסופר, חווים את חייו דרך עיניו, נכנסים לעולמו מחשבותיו ותפיסת העולם היחודית שלהם! תשאבו לעלם שלם של סיפורים משמעותיים ומרגשים והפכו לחלק מהקהילה שלנו!
+            </Typography>
+          </div>
+
+          <img className="secondhomepageimg" src={woman} alt="" />
       </div>
       <Typography
           style={{
