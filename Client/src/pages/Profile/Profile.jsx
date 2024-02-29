@@ -12,11 +12,11 @@ import Modal from 'react-modal';
 import { useState, useEffect, useContext } from 'react';
 import Context from '../../Context';
 import { Navigate, useNavigate } from 'react-router-dom';
-
+import AvatarCloudinary from "../../components/AvatarCloudinary"
 const defaultTheme = createTheme();
 
 export default function Profile() {
-  const { getRequest, postRequest } = useContext(Context);
+  const { getRequest, postRequest, activeimg,setactiveimg } = useContext(Context);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -47,6 +47,7 @@ export default function Profile() {
       setmodalMessage(response.data.message);
       setUserCreated(true);
       openModal();
+      setactiveimg(user.profileImg);
     } catch (error) {
       setmodalMessage(error.response.data.message);
       setUserCreated(false);
@@ -62,7 +63,7 @@ export default function Profile() {
       displayName: data.get('displayName'),
       email: data.get('email'),
       password: data.get('password'),
-      profileImg: data.get('profileImg'),
+      profileImg: user?.profileImg,
       birthDate: data.get('birthDate'),
       about: data.get('about'),
     });
@@ -121,15 +122,19 @@ export default function Profile() {
                   alignItems: 'center',
                 }}
               >
-                <Avatar
+                <AvatarCloudinary value={{activeimg, setactiveimg, user}}>
+ 
+    <Avatar
                   sx={{
                     width: 100,
                     height: 100,
                     mb: 1.5,
                   }}
-                  src={user?.profileImg}
+                  src={user?.profileImg ?  user.profileImg:activeimg }
                   alt="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                 />
+</AvatarCloudinary>
+                
                 <Typography component="h1" variant="h5">
                   {user?.displayName ? user.displayName : user?.username}
                 </Typography>

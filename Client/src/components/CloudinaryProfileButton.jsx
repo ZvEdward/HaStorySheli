@@ -37,15 +37,15 @@ try {
 };
 
 return (
-    <div >
+    <div style={{display:'flex', justifyContent:"center", alignItems:"center",height:'100%'}}>
     <label htmlFor="file-input">
     <Button
-        variant="outlined"
-        size="small"
+        sx={{padding:'10px'}}
+        variant="contained"
+        size="large"
         component="span"
-        endIcon={<ChangeIcon />}
         >
-        Change
+        תמונת פרופיל
         </Button>
     </label>
     <Input

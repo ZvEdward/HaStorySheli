@@ -26,14 +26,14 @@ import * as React from 'react';
     // 'Profile', 
 
     function Navbar() {
-        const { getRequest, postRequest } = useContext(Context);
+        const { getRequest, postRequest,activeimg } = useContext(Context);
         const [user, setUser] = useState(null);
         const [usernameError, setUserNameError] = useState(false);
         const [passwordError, setPasswordError] = useState(false);
         const [loginError, setLoginError] = useState(false);
         useEffect(() => {
             getThisUser();
-        }, []);
+        }, [activeimg]);
 
         const getThisUser = async () => {
             try {
